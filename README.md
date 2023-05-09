@@ -22,7 +22,7 @@ Hypebard is an AI-powered writing assistant that makes writing easier and more e
 You can download the APK file from the releases section of this repository or build the app from source using the instructions below:
 
 ```bash
-git clone https://github.com/yourusername/hypebard.git
+git clone https://github.com/somritdasgupta/hypebard.git
 cd hypebard
 flutter build apk
 ````
