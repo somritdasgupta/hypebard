@@ -1,14 +1,14 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hypebard/components/QuestionInput.dart';
 import 'package:hypebard/page/ChatHistoryPage.dart';
 import 'package:hypebard/page/ChatPage.dart';
 import 'package:hypebard/page/SettingPage.dart';
+import 'package:hypebard/stores/AIChatStore.dart';
 import 'package:hypebard/utils/Chatgpt.dart';
 import 'package:hypebard/utils/Config.dart';
 import 'package:hypebard/utils/Time.dart';
 import 'package:hypebard/utils/Utils.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:hypebard/stores/AIChatStore.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
@@ -158,7 +158,8 @@ class _HomePageState extends State<HomePage> {
                                   ),
                                 ),
                                 Container(
-                                  padding: const EdgeInsets.fromLTRB(0, 0, 8, 0),
+                                  padding:
+                                      const EdgeInsets.fromLTRB(0, 0, 8, 0),
                                   height: 16,
                                   child: const Image(
                                     image: AssetImage('images/arrow_icon.png'),

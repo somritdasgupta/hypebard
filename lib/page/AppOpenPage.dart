@@ -1,8 +1,10 @@
 import 'dart:async';
-import 'package:hypebard/utils/Utils.dart';
+
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
 import 'package:hypebard/page/HomePage.dart';
+import 'package:hypebard/utils/Utils.dart';
+import 'package:lottie/lottie.dart';
+
 import '../utils/Config.dart';
 
 class SplashPage extends StatefulWidget {
@@ -85,7 +87,6 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
                     fontSize: 50,
                     height: 28 / 28,
                     fontWeight: FontWeight.bold,
-
                   ),
                 ),
               if (!_isAnimateFileLoaded) const SizedBox(height: 28),

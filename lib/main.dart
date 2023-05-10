@@ -1,19 +1,19 @@
 import 'dart:async';
+
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:hypebard/components/HideKeyboard.dart';
 import 'package:hypebard/page/AppOpenPage.dart';
 import 'package:hypebard/stores/AIChatStore.dart';
-import 'package:flutter/material.dart';
 import 'package:hypebard/utils/Chatgpt.dart';
-import 'package:get_storage/get_storage.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 void main() async {
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarColor: Colors.transparent,
-
   ));
   await dotenv.load(fileName: ".env");
 
@@ -27,8 +27,9 @@ void main() async {
   );
   configLoading();
 }
+
 void enterFullScreenButKeepBottomOverlay() {
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
 }
 
 class MyApp extends StatelessWidget {
@@ -42,6 +43,12 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           scaffoldBackgroundColor: const Color(0xFFF6F1F1),
           brightness: Brightness.light,
+          pageTransitionsTheme: PageTransitionsTheme(
+            builders: {
+              TargetPlatform.android: FadeUpwardsPageTransitionsBuilder(),
+              TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
+            },
+          ),
           fontFamily: 'Poppins',
         ),
         home: const SplashPage(),

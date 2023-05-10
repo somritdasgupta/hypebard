@@ -1,6 +1,6 @@
-import 'package:hypebard/utils/Chatgpt.dart';
 import 'package:flutter/material.dart';
 import 'package:hypebard/stores/AIChatStore.dart';
+import 'package:hypebard/utils/Chatgpt.dart';
 import 'package:provider/provider.dart';
 
 GlobalKey<_QuestionInputState> globalQuestionInputKey = GlobalKey();
@@ -239,20 +239,23 @@ class _QuestionInputState extends State<QuestionInput> {
             child: Container(
               padding: const EdgeInsets.fromLTRB(20, 4, 8, 4),
               decoration: BoxDecoration(
-                color: Colors.white.withAlpha(700),
-              borderRadius: BorderRadius.circular(50.0),
-              border: Border.all(color: Colors.black, width: 5),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.blueGrey.withOpacity(0.5), // Shadow color
-                  spreadRadius: 0, // Spread radius
-                  blurRadius: 20, // Blur radius
-                  offset: const Offset(0, 0), // Offs
-                  blurStyle: BlurStyle.outer,// et in the x and y direction
-                ),
-              ],
-            ),
-
+                color: Colors.white.withAlpha(500),
+                borderRadius: BorderRadius.circular(50.0),
+                border: Border.all(color: Colors.black, width: 5),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.blueGrey.withOpacity(0.5),
+                    // Shadow color
+                    spreadRadius: 0,
+                    // Spread radius
+                    blurRadius: 20,
+                    // Blur radius
+                    offset: const Offset(0, 0),
+                    // Offs
+                    blurStyle: BlurStyle.outer, // et in the x and y direction
+                  ),
+                ],
+              ),
               child: Row(
                 children: [
                   Expanded(
@@ -264,8 +267,7 @@ class _QuestionInputState extends State<QuestionInput> {
                       maxLines: 2,
                       cursorRadius: Radius.zero,
                       decoration: const InputDecoration.collapsed(
-                        hintText: "Let's start with you..."
-                      ),
+                          hintText: "Let's start with you..."),
                       autofocus: widget.autofocus,
                       style: const TextStyle(
                         color: Colors.black87,
@@ -313,7 +315,8 @@ class _QuestionInputState extends State<QuestionInput> {
         padding: const EdgeInsets.fromLTRB(8, 8, 12, 8),
         width: 50,
         child: Image(
-          image: AssetImage('images/${isActive ? 'submit_active_icon' : 'submit_icon'}.png'),
+          image: AssetImage(
+              'images/${isActive ? 'submit_active_icon' : 'submit_icon'}.png'),
         ),
       ),
     );

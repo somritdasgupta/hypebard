@@ -2,7 +2,9 @@
 
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
-Hypebard is an AI-powered writing assistant that makes writing easier and more enjoyable than ever before. Built using Flutter and written in Dart, Hypebard uses OpenAI's GPT technology to provide you with natural language processing capabilities that are second to none.
+Hypebard is an AI-powered writing assistant that makes writing easier and more enjoyable than ever before. Built using
+Flutter and written in Dart, Hypebard uses OpenAI's GPT technology to provide you with natural language processing
+capabilities that are second to none.
 
 ## Features
 
@@ -12,14 +14,14 @@ Hypebard is an AI-powered writing assistant that makes writing easier and more e
 
 ## Screenshots
 
-| Screenshot 1 | Screenshot 2 | Screenshot 3 |
-| --- | --- | --- |
+| Screenshot 1                                 | Screenshot 2                                 | Screenshot 3                                 |
+|----------------------------------------------|----------------------------------------------|----------------------------------------------|
 | ![Screenshot 1](screenshots/screenshot1.png) | ![Screenshot 2](screenshots/screenshot2.png) | ![Screenshot 3](screenshots/screenshot3.png) |
-
 
 ## Installation
 
-You can download the APK file from the releases section of this repository or build the app from source using the instructions below:
+You can download the APK file from the releases section of this repository or build the app from source using the
+instructions below:
 
 ```bash
 git clone https://github.com/somritdasgupta/hypebard.git
@@ -29,7 +31,8 @@ flutter build apk
 
 ## Usage
 
-To use Hypebard, simply type or dictate your text into the app, and the AI will provide you with natural language processing assistance. You can also format your text using the provided formatting options.
+To use Hypebard, simply type or dictate your text into the app, and the AI will provide you with natural language
+processing assistance. You can also format your text using the provided formatting options.
 
 ## Contributing
 
@@ -37,7 +40,7 @@ Contributions are welcome! Please read the [contribution guidelines](CONTRIBUTIN
 
 ## License
 
-Hypebard is licensed under the [MIT License](LICENSE). 
+Hypebard is licensed under the [MIT License](LICENSE).
 
 ## Acknowledgements
 

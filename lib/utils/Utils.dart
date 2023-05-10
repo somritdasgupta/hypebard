@@ -27,7 +27,8 @@ class Utils {
   static pushReplacement(BuildContext context, Widget widget) {
     PageRoute builder = PageRouteBuilder(
       transitionDuration: const Duration(milliseconds: 0),
-      pageBuilder: (BuildContext context, Animation<double> animation, Animation secondaryAnimation) {
+      pageBuilder: (BuildContext context, Animation<double> animation,
+          Animation secondaryAnimation) {
         return widget;
       },
     );

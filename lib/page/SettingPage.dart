@@ -1,10 +1,10 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:hypebard/stores/AIChatStore.dart';
 import 'package:hypebard/utils/Chatgpt.dart';
 import 'package:hypebard/utils/Config.dart';
 import 'package:hypebard/utils/Utils.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:provider/provider.dart';
 import 'package:sp_util/sp_util.dart';
 
@@ -17,8 +17,10 @@ class SettingPage extends StatefulWidget {
 
 class _SettingPageState extends State<SettingPage> with WidgetsBindingObserver {
   bool isCopying = false;
-  final TextEditingController _keyTextEditingController = TextEditingController();
-  final TextEditingController _urlTextEditingController = TextEditingController();
+  final TextEditingController _keyTextEditingController =
+      TextEditingController();
+  final TextEditingController _urlTextEditingController =
+      TextEditingController();
 
   @override
   void initState() {
@@ -46,137 +48,135 @@ class _SettingPageState extends State<SettingPage> with WidgetsBindingObserver {
     }
   }
 
-
-
   @override
   Widget build(BuildContext context) {
-
     return Stack(
       children: [
         Scaffold(
-      resizeToAvoidBottomInset: true,
-      appBar: AppBar(
-        systemOverlayStyle: SystemUiOverlayStyle.dark,
-        toolbarHeight: 60,
-        automaticallyImplyLeading: false,
-        titleSpacing: 0,
-        title: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            InkWell(
-              splashColor: Colors.white,
-              highlightColor: Colors.white,
-              onTap: () {
-                Navigator.pop(context);
-              },
-              child: SizedBox(
-                height: 60,
-                child: Row(
-                  children: const [
-                    SizedBox(width: 24),
-                    Image(
-                      width: 18,
-                      image: AssetImage('images/back_icon.png'),
+          resizeToAvoidBottomInset: true,
+          appBar: AppBar(
+            systemOverlayStyle: SystemUiOverlayStyle.dark,
+            toolbarHeight: 60,
+            automaticallyImplyLeading: false,
+            titleSpacing: 0,
+            title: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                InkWell(
+                  splashColor: Colors.white,
+                  highlightColor: Colors.white,
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: SizedBox(
+                    height: 60,
+                    child: Row(
+                      children: const [
+                        SizedBox(width: 24),
+                        Image(
+                          width: 18,
+                          image: AssetImage('images/back_icon.png'),
+                        ),
+                        SizedBox(width: 12),
+                        Text(
+                          "Settings",
+                          style: TextStyle(
+                            color: Color.fromRGBO(0, 0, 0, 1),
+                            fontSize: 26,
+                            height: 0,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        SizedBox(width: 24),
+                      ],
                     ),
-                    SizedBox(width: 12),
-                    Text(
-                      "Settings",
-                      style: TextStyle(
-                        color: Color.fromRGBO(0, 0, 0, 1),
-                        fontSize: 26,
-                        height: 0,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                    SizedBox(width: 24),
-                  ],
+                  ),
                 ),
-              ),
+              ],
             ),
-          ],
-        ),
-        backgroundColor: const Color(0xFFF6F1F1),
-        elevation: 0,
-      ),
-      body: Container(
-        color: const Color(0xFFF6F1F1),
-        child: SafeArea(
-          child: Container(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
+            backgroundColor: const Color(0xFFF6F1F1),
+            elevation: 0,
+          ),
+          body: Container(
+            color: const Color(0xFFF6F1F1),
+            child: SafeArea(
+              child: Container(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      renderItemWidget(
+                        'images/key_icon.png',
+                        Colors.lightGreen,
+                        26,
+                        'Customize OpenAI API Key',
+                        () async {
+                          String cacheKey = ChatGPT.getCacheOpenAIKey();
+                          _keyTextEditingController.text = cacheKey;
+                          _showCustomOpenAIKeyDialog();
+                        },
+                      ),
 
-                  renderItemWidget(
-                    'images/key_icon.png',
-                    Colors.lightGreen,
-                    26,
-                    'Customize OpenAI API Key',
-                    () async {
-                      String cacheKey = ChatGPT.getCacheOpenAIKey();
-                      _keyTextEditingController.text = cacheKey;
-                      _showCustomOpenAIKeyDialog();
-                    },
+                      renderItemWidget(
+                        'images/url_icon.png',
+                        Colors.deepPurpleAccent,
+                        26,
+                        'Customize OpenAI Base URL',
+                        () async {
+                          String cacheUrl = ChatGPT.getCacheOpenAIBaseUrl();
+                          _urlTextEditingController.text = cacheUrl;
+                          _showCustomOpenAIUrlDialog();
+                        },
+                      ),
+
+                      renderItemWidget(
+                        'images/user_icon.png',
+                        Colors.orange,
+                        32,
+                        'Somrit, here!',
+                        () {
+                          final Uri url = Uri.parse(
+                              'https://wewehao.github.io/Privacy/privacy.html');
+                          Utils.launchURL(url);
+                        },
+                      ),
+
+                      /// Empty storage
+                      if (Config.isDebug)
+                        renderItemWidget(
+                          'images/debug_icon.png',
+                          Colors.indigo,
+                          22,
+                          'Clear Data',
+                          () {
+                            ChatGPT.storage.erase();
+                            final store = Provider.of<AIChatStore>(context,
+                                listen: false);
+                            store.syncStorage();
+                            SpUtil.clear();
+                            EasyLoading.showToast('Data cleared successfully');
+                          },
+                        ),
+                    ],
                   ),
-
-                  renderItemWidget(
-                    'images/url_icon.png',
-                    Colors.deepPurpleAccent,
-                    26,
-                    'Customize OpenAI Base URL',
-                    () async {
-                      String cacheUrl = ChatGPT.getCacheOpenAIBaseUrl();
-                      _urlTextEditingController.text = cacheUrl;
-                      _showCustomOpenAIUrlDialog();
-                    },
-                  ),
-
-                  renderItemWidget(
-                    'images/user_icon.png',
-                    Colors.orange,
-                    32,
-                    'Somrit, here!',
-                    () {
-                      final Uri url = Uri.parse('https://wewehao.github.io/Privacy/privacy.html');
-                      Utils.launchURL(url);
-                    },
-                  ),
-
-                  /// Empty storage
-                  if (Config.isDebug)
-                    renderItemWidget(
-                      'images/debug_icon.png',
-                      Colors.indigo,
-                      22,
-                      'Clear Data',
-                      () {
-                        ChatGPT.storage.erase();
-                        final store = Provider.of<AIChatStore>(context, listen: false);
-                        store.syncStorage();
-                        SpUtil.clear();
-                        EasyLoading.showToast('Data cleared successfully');
-                      },
-                    ),
-                ],
+                ),
               ),
             ),
           ),
         ),
-      ),
-    ),
         const Positioned(
-      left: 0,
-      right: 0,
-      bottom: 10,
-      child: Text(
-        'Made with ❤ by Somrit',
-        textAlign: TextAlign.center,
-        style: TextStyle(
-          color: Colors.blueGrey,
-          fontSize: 14,
+          left: 0,
+          right: 0,
+          bottom: 10,
+          child: Text(
+            'Made with ❤ by Somrit',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Colors.blueGrey,
+              fontSize: 14,
+            ),
+          ),
         ),
-      ),
-    ),
-    ],
+      ],
     );
   }
 
@@ -197,7 +197,8 @@ class _SettingPageState extends State<SettingPage> with WidgetsBindingObserver {
         children: [
           Container(
             margin: const EdgeInsets.all(10),
-            padding: const EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 20),
+            padding:
+                const EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 20),
             decoration: BoxDecoration(
               color: Color(0xA5B7D5AF),
               borderRadius: BorderRadius.circular(15),
@@ -232,7 +233,10 @@ class _SettingPageState extends State<SettingPage> with WidgetsBindingObserver {
                     title,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(color: Colors.black87, fontSize: 16, fontWeight: FontWeight.normal),
+                    style: const TextStyle(
+                        color: Colors.black87,
+                        fontSize: 16,
+                        fontWeight: FontWeight.normal),
                   ),
                 ),
                 if (rightIconSrc != '')
@@ -273,7 +277,8 @@ class _SettingPageState extends State<SettingPage> with WidgetsBindingObserver {
               TextField(
                 controller: _keyTextEditingController,
                 autofocus: true,
-                decoration: const InputDecoration(hintText: 'Please input your key'),
+                decoration:
+                    const InputDecoration(hintText: 'Please input your key'),
               ),
               const SizedBox(height: 12),
               GestureDetector(
@@ -396,7 +401,8 @@ class _SettingPageState extends State<SettingPage> with WidgetsBindingObserver {
               TextField(
                 controller: _urlTextEditingController,
                 autofocus: true,
-                decoration: const InputDecoration(hintText: 'Please input your OpenAI host'),
+                decoration: const InputDecoration(
+                    hintText: 'Please input your OpenAI host'),
               ),
               const SizedBox(height: 12),
               Wrap(
@@ -438,7 +444,8 @@ class _SettingPageState extends State<SettingPage> with WidgetsBindingObserver {
             TextButton(
               child: const Text('Confirm'),
               onPressed: () async {
-                ChatGPT.setOpenAIBaseUrl(_urlTextEditingController.text).then((_) {
+                ChatGPT.setOpenAIBaseUrl(_urlTextEditingController.text)
+                    .then((_) {
                   _urlTextEditingController.clear();
                   Navigator.of(context).pop(true);
                   EasyLoading.showToast(

@@ -1,11 +1,9 @@
-import 'package:hypebard/page/ChatPage.dart';
-import 'package:hypebard/page/SettingPage.dart';
-import 'package:hypebard/utils/Config.dart';
-import 'package:hypebard/utils/Time.dart';
-import 'package:hypebard/utils/Utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:hypebard/page/ChatPage.dart';
 import 'package:hypebard/stores/AIChatStore.dart';
+import 'package:hypebard/utils/Time.dart';
+import 'package:hypebard/utils/Utils.dart';
 import 'package:provider/provider.dart';
 
 class ChatHistoryPage extends StatefulWidget {

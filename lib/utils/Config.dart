@@ -2,8 +2,11 @@ import 'package:hypebard/utils/Chatgpt.dart';
 
 class Config {
   static late Config _instance = Config._();
+
   factory Config() => _getInstance();
+
   static Config get instance => _getInstance();
+
   Config._() {}
 
   static Config _getInstance() {
@@ -14,6 +17,7 @@ class Config {
   }
 
   static bool get isDebug => !const bool.fromEnvironment('dart.vm.product');
+
   // static bool get isDebug => true;
 
   /// TODO VIP
@@ -28,9 +32,11 @@ class Config {
     return true;
   }
 
-  static bool isInfiniteNumberVersion = true; // Unlimited frequency. Development and use
+  static bool isInfiniteNumberVersion =
+      true; // Unlimited frequency. Development and use
   static String appName = 'hypeBard';
   static String contactEmail = 'somritdasgupta@outlook.com';
   static int watchAdApiCount = 3;
-  static int appUserAdCount = 20; // Do not actively display advertisements if the number of times exceeds (redemption page)
+  static int appUserAdCount =
+      20; // Do not actively display advertisements if the number of times exceeds (redemption page)
 }
