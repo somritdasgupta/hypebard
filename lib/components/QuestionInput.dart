@@ -148,7 +148,7 @@ class _QuestionInputState extends State<QuestionInput> {
     };
 
     bool isFirstMessage = widget.chat['messages'].length == 0;
-    debugPrint('---是否首次发消息 $isFirstMessage---');
+    debugPrint('--- $isFirstMessage---');
     Map chat = await store.pushMessage(widget.chat, message);
 
     List messages = [
@@ -227,8 +227,8 @@ class _QuestionInputState extends State<QuestionInput> {
       decoration: const BoxDecoration(
         border: Border(
           top: BorderSide(
-            width: 0.5,
-            color: Color.fromRGBO(210, 210, 210, 1.0),
+            width: 0,
+            color: Colors.transparent,
           ),
         ),
       ),
@@ -239,10 +239,20 @@ class _QuestionInputState extends State<QuestionInput> {
             child: Container(
               padding: const EdgeInsets.fromLTRB(20, 4, 8, 4),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(50.0),
-                border: Border.all(color: Colors.black, width: 5),
+                color: Colors.white.withAlpha(700),
+              borderRadius: BorderRadius.circular(50.0),
+              border: Border.all(color: Colors.black, width: 5),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.blueGrey.withOpacity(0.5), // Shadow color
+                  spreadRadius: 0, // Spread radius
+                  blurRadius: 20, // Blur radius
+                  offset: const Offset(0, 0), // Offs
+                  blurStyle: BlurStyle.outer,// et in the x and y direction
+                ),
+              ],
+            ),
 
-              ),
               child: Row(
                 children: [
                   Expanded(
@@ -252,6 +262,7 @@ class _QuestionInputState extends State<QuestionInput> {
                       controller: questionController,
                       minLines: 1,
                       maxLines: 2,
+                      cursorRadius: Radius.zero,
                       decoration: const InputDecoration.collapsed(
                         hintText: "Let's start with you..."
                       ),
