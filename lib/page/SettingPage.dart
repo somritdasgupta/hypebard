@@ -4,9 +4,9 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:hypebard/stores/AIChatStore.dart';
 import 'package:hypebard/utils/Chatgpt.dart';
 import 'package:hypebard/utils/Config.dart';
-import 'package:hypebard/utils/Utils.dart';
 import 'package:provider/provider.dart';
 import 'package:sp_util/sp_util.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SettingPage extends StatefulWidget {
   const SettingPage({Key? key}) : super(key: key);
@@ -130,13 +130,13 @@ class _SettingPageState extends State<SettingPage> with WidgetsBindingObserver {
 
                       renderItemWidget(
                         'images/user_icon.png',
-                        Colors.orange,
+                        Colors.pinkAccent,
                         32,
-                        'Somrit, here!',
-                        () {
+                        'Hey, somrit here!',
+                        () async {
                           final Uri url = Uri.parse(
-                              'https://wewehao.github.io/Privacy/privacy.html');
-                          Utils.launchURL(url);
+                              'https://www.linkedin.com/in/somritdasgupta');
+                          launchURL(url.toString());
                         },
                       ),
 
@@ -200,7 +200,7 @@ class _SettingPageState extends State<SettingPage> with WidgetsBindingObserver {
             padding:
                 const EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 20),
             decoration: BoxDecoration(
-              color: Color(0xA5B7D5AF),
+              color: const Color(0xA5B7D5AF),
               borderRadius: BorderRadius.circular(15),
             ),
             child: Row(
@@ -460,4 +460,17 @@ class _SettingPageState extends State<SettingPage> with WidgetsBindingObserver {
       },
     );
   }
+
+  void launchURL(String url) async {
+  try {
+    await launch(
+      url,
+      forceSafariVC: false,
+      forceWebView: false,
+    );
+  } catch (e) {
+    throw 'Could not launch $url';
+  }
+}
+
 }

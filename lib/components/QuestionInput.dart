@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hypebard/stores/AIChatStore.dart';
 import 'package:hypebard/utils/Chatgpt.dart';
 import 'package:provider/provider.dart';
+import 'package:speech_to_text/speech_to_text.dart' as stt;
 
 GlobalKey<_QuestionInputState> globalQuestionInputKey = GlobalKey();
 
@@ -31,9 +32,63 @@ class _QuestionInputState extends State<QuestionInput> {
   bool _isGenerating = false;
   String myQuestion = '';
 
+  final stt.SpeechToText _speechToText = stt.SpeechToText(); // Add this line
+  bool _isListening = false;
+  String _transcription = '';
+
   @override
   void initState() {
     super.initState();
+    _initializeSpeechToText();
+  }
+
+  void _initializeSpeechToText() async {
+    bool available = await _speechToText.initialize();
+    if (available) {
+      _speechToText.errorListener = (error) {
+        print('Speech recognition error: $error');
+        setState(() {
+          _isListening = false;
+        });
+      };
+    } else {
+      print('The user has denied the use of speech recognition.');
+    }
+  }
+
+ void _startListening() async {
+  if (!_isListening) {
+    bool available = await _speechToText.initialize();
+    if (available) {
+      setState(() {
+        _isListening = true;
+        _transcription = '';
+      });
+      _speechToText.listen(
+        onResult: (result) {
+          setState(() {
+            _transcription = result.recognizedWords;
+            questionController.text= _transcription;
+
+          });
+          if (result.finalResult ) {
+            _stopListening();
+            onQuestionChange(_transcription);
+            onSubmit();
+          }
+        },
+      );
+    }
+  }
+}
+
+  void _stopListening() {
+    if (_isListening) {
+      _speechToText.stop();
+      setState(() {
+        _isListening = false;
+      });
+    }
   }
 
   @override
@@ -213,17 +268,33 @@ class _QuestionInputState extends State<QuestionInput> {
     }
   }
 
-  void onQuestionChange(String value) {
-    setState(() {
-      myQuestion = value;
-    });
-  }
+ void onQuestionChange(String value) {
+  setState(() {
+    myQuestion = value;
+    if (_isListening) {
+      questionController.text = _transcription;
+      onSubmit();// Update the text field with the transcription
+    }
+  });
+}
+
+
+Image _getMicrophoneImage() {
+  String imagePath = _isListening ? 'microphone_active_icon.png' : 'microphone_icon.png';
+  return Image.asset(
+    'images/$imagePath',
+    width: 40,
+    height: 30,
+  );
+}
+
+
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width,
-      padding: const EdgeInsets.fromLTRB(18, 16, 18, 16),
+      padding: const EdgeInsets.fromLTRB(18, 10, 18, 10),
       decoration: const BoxDecoration(
         border: Border(
           top: BorderSide(
@@ -267,7 +338,7 @@ class _QuestionInputState extends State<QuestionInput> {
                       maxLines: 2,
                       cursorRadius: Radius.zero,
                       decoration: const InputDecoration.collapsed(
-                          hintText: "Let's start with you..."),
+                          hintText: "Let's start..."),
                       autofocus: widget.autofocus,
                       style: const TextStyle(
                         color: Colors.black87,
@@ -303,22 +374,40 @@ class _QuestionInputState extends State<QuestionInput> {
     );
   }
 
-  Widget renderSubmitBtnWidget() {
-    bool isActive = myQuestion != '' && !_isGenerating;
 
-    return GestureDetector(
-      behavior: HitTestBehavior.translucent,
-      onTap: () {
-        onSubmit();
-      },
-      child: Container(
-        padding: const EdgeInsets.fromLTRB(8, 8, 12, 8),
-        width: 50,
-        child: Image(
-          image: AssetImage(
-              'images/${isActive ? 'submit_active_icon' : 'submit_icon'}.png'),
+Widget renderSubmitBtnWidget() {
+  bool isActive = _transcription.isNotEmpty || !_isGenerating && !_isListening;
+  return Row(
+    children: [
+      GestureDetector(
+        behavior: HitTestBehavior.translucent,
+        onTap: () {
+          if (_isListening) {
+            _stopListening();
+          } else {
+            _startListening();
+          }
+        },
+        child: Container(
+          padding: const EdgeInsets.all(8),
+          child: _getMicrophoneImage(),
+          ),
+        ),
+      GestureDetector(
+        behavior: HitTestBehavior.translucent,
+        onTap: () {
+          onSubmit();
+        },
+        child: Container(
+          padding: const EdgeInsets.all(8),
+          child: Image.asset(
+            width: 40,
+            height: 30,
+            'images/${isActive ? 'submit_active_icon.png' : 'submit_icon.png'}',
+          ),
         ),
       ),
-    );
-  }
+    ],
+  );
+}
 }

@@ -92,7 +92,7 @@ class _HomePageState extends State<HomePage> {
           children: [
             const SizedBox(width: 24),
             ClipRRect(
-              borderRadius: BorderRadius.circular(30.0),
+              borderRadius: BorderRadius.circular(10.0),
               clipBehavior: Clip.antiAlias,
               child: const Image(
                 width: 36,

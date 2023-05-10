@@ -365,7 +365,7 @@ class _ChatPageState extends State<ChatPage> {
     Widget? customContent;
 
     if (role == 'user') {
-      defaultAvatar = 'images/user_icon.png';
+      defaultAvatar = 'images/you.png';
       defaultRoleName = 'You';
       defaultColor = const Color(0xA5C2DABC);
       defaultIcons = [];

@@ -37,6 +37,5 @@ class Config {
   static String appName = 'hypeBard';
   static String contactEmail = 'somritdasgupta@outlook.com';
   static int watchAdApiCount = 3;
-  static int appUserAdCount =
-      20; // Do not actively display advertisements if the number of times exceeds (redemption page)
+  static int appUserAdCount = 20; // Do not actively display advertisements if the number of times exceeds (redemption page)
 }

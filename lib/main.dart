@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart' show dotenv;
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:hypebard/components/HideKeyboard.dart';
