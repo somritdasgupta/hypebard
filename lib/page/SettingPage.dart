@@ -129,9 +129,9 @@ class _SettingPageState extends State<SettingPage> with WidgetsBindingObserver {
                       ),
 
                       renderItemWidget(
-                        'images/user_icon.png',
-                        Colors.pinkAccent,
-                        32,
+                        'images/dev.png',
+                        Colors.teal,
+                        42,
                         'Hey, somrit here!',
                         () async {
                           final Uri url = Uri.parse(

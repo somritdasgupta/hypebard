@@ -153,7 +153,7 @@ class _ChatPageState extends State<ChatPage> {
               onTap: () {
                 Navigator.pop(context);
               },
-              child: Row(
+              child: const Row(
                 children: [
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -161,7 +161,7 @@ class _ChatPageState extends State<ChatPage> {
                       SizedBox(
                         height: 60,
                         child: Row(
-                          children: const [
+                          children: [
                             SizedBox(width: 24),
                             Image(
                               width: 18,
@@ -277,13 +277,13 @@ class _ChatPageState extends State<ChatPage> {
           children: [
             const SizedBox(height: 60),
             const Image(
-              width: 25,
-              height: 25,
-              image: AssetImage('images/tip_icon.png'),
+              width: 50,
+              height: 60,
+              image: AssetImage('images/bard.png'),
             ),
             const SizedBox(height: 12),
             const Text(
-              'Get started',
+              'Get started, Made with ❤ by Somrit',
               style: TextStyle(
                 color: Colors.black,
                 fontSize: 16,
@@ -302,23 +302,7 @@ class _ChatPageState extends State<ChatPage> {
     return _genMessageListWidget(messages);
   }
 
-  /// TODO Performance optimization?
   Widget _genMessageListWidget(List messages) {
-    // List<Widget> list = [];
-    // for (var i = 0; i < messages.length; i++) {
-    //   list.add(
-    //     _genMessageItemWidget(messages[i], i),
-    //   );
-    // }
-    // list.add(
-    //   const SizedBox(height: 10),
-    // );
-    // return SingleChildScrollView(
-    //   child: Column(
-    //     children: list,
-    //   ),
-    // );
-
     return ListView.builder(
       padding: const EdgeInsets.fromLTRB(0, 8, 0, 20),
       addAutomaticKeepAlives: false,
@@ -333,13 +317,6 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   Widget _genMessageItemWidget(Map message, int index) {
-    // String role = message['role'];
-    // if (role == 'generating') {
-    //   return SizedBox(
-    //     height: 160,
-    //     child: _generatingLottie,
-    //   );
-    // }
 
     return Container(
       color: Color(0xFFF6F1F1),

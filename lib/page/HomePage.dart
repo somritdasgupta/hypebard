@@ -11,6 +11,7 @@ import 'package:hypebard/utils/Time.dart';
 import 'package:hypebard/utils/Utils.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
+import 'package:vibration/vibration.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -84,6 +85,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         systemOverlayStyle: SystemUiOverlayStyle.dark,
+        forceMaterialTransparency: true,
         toolbarHeight: 70,
         automaticallyImplyLeading: true,
         titleSpacing: 0,
@@ -116,10 +118,12 @@ class _HomePageState extends State<HomePage> {
         actions: [
           const SizedBox(width: 6),
           IconButton(
-            icon: const Icon(Icons.security_rounded),
+            icon: const Icon(Icons.admin_panel_settings_rounded),
+            splashColor: Colors.black54,
             iconSize: 40,
             color: const Color.fromRGBO(98, 98, 98, 1.0),
             onPressed: () {
+              Vibration.vibrate(duration: 50); // Vibration effect of 50 milliseconds
               // ChatGPT.genImage('Robot avatar, cute');
               Utils.jumpPage(context, const SettingPage());
             },
@@ -174,7 +178,7 @@ class _HomePageState extends State<HomePage> {
                       _renderChatListWidget(
                         store.homeHistoryList,
                       ),
-                    _renderTitle('Welcome to hypeBard.'),
+                    _renderTitle("Hey, I am Bard."),
                     _renderChatModelListWidget(),
                   ],
                 ),

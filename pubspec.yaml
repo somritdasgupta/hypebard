@@ -28,6 +28,7 @@ dependencies:
   provider: ^6.0.5
   flutter_tts: ^3.6.3
   speech_to_text: ^6.1.1
+  vibration: ^1.7.7
 
 dev_dependencies:
   flutter_test:

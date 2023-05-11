@@ -3,6 +3,7 @@ import 'package:hypebard/stores/AIChatStore.dart';
 import 'package:hypebard/utils/Chatgpt.dart';
 import 'package:provider/provider.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
+import 'package:vibration/vibration.dart';
 
 GlobalKey<_QuestionInputState> globalQuestionInputKey = GlobalKey();
 
@@ -287,9 +288,6 @@ Image _getMicrophoneImage() {
     height: 30,
   );
 }
-
-
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -312,7 +310,7 @@ Image _getMicrophoneImage() {
               decoration: BoxDecoration(
                 color: Colors.white.withAlpha(500),
                 borderRadius: BorderRadius.circular(50.0),
-                border: Border.all(color: Colors.black, width: 5),
+                border: Border.all(color: const Color.fromRGBO(70, 20, 75, 0.9254901960784314), width: 5),
                 boxShadow: [
                   BoxShadow(
                     color: Colors.blueGrey.withOpacity(0.5),
@@ -387,6 +385,7 @@ Widget renderSubmitBtnWidget() {
           } else {
             _startListening();
           }
+          Vibration.vibrate(duration: 50); // Vibration effect of 50 milliseconds
         },
         child: Container(
           padding: const EdgeInsets.all(8),
