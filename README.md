@@ -2,9 +2,17 @@
 
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
-Hypebard is an AI-powered writing assistant that makes writing easier and more enjoyable than ever before. Built using
-Flutter and written in Dart, Hypebard uses OpenAI's GPT technology to provide you with natural language processing
-capabilities that are second to none.
+<div style="display: flex;">
+  <div style="flex: 1;">
+    <a href="https://app.daily.dev/somrit">
+      <img src="https://api.daily.dev/devcards/da71dd31134c42e488c5f8afd3548e65.png?r=sk9" width="150" alt="Somrit Dasgupta's Dev Card"/>
+    </a>
+  </div>
+  
+  <div style="flex: 2;">
+    <p>Hypebard is an AI-powered writing assistant that makes writing easier and more enjoyable than ever before. Built using Flutter and written in Dart, Hypebard uses OpenAI's GPT technology to provide you with natural language processing capabilities that are second to none.</p>
+  </div>
+</div>
 
 ## Features
 
