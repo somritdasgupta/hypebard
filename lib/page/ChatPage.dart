@@ -9,6 +9,7 @@ import 'package:hypebard/utils/Chatgpt.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:vibration/vibration.dart';
 
 class ChatPage extends StatefulWidget {
   final String chatId;
@@ -437,6 +438,7 @@ class _ChatPageState extends State<ChatPage> {
   Widget _renderShareWidget(Map message) {
     return GestureDetector(
       onTap: () async {
+        Vibration.vibrate(duration: 50);
         Share.share(message['content']);
       },
       child: Container(
@@ -452,6 +454,7 @@ class _ChatPageState extends State<ChatPage> {
   Widget _renderVoiceWidget(Map message) {
     return GestureDetector(
       onTap: () async {
+        Vibration.vibrate(duration: 50);
         _speak(message['content']);
       },
       child: Container(
@@ -467,6 +470,7 @@ class _ChatPageState extends State<ChatPage> {
   Widget _renderCopyWidget(Map message) {
     return GestureDetector(
       onTap: () async {
+        Vibration.vibrate(duration: 50);
         if (_isCopying) {
           return;
         }
@@ -495,6 +499,7 @@ class _ChatPageState extends State<ChatPage> {
   Widget _renderRegenerateWidget(int index) {
     return GestureDetector(
       onTap: () {
+        Vibration.vibrate(duration: 50);
         globalQuestionInputKey.currentState?.reGenerate(index);
       },
       child: Container(

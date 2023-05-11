@@ -68,10 +68,10 @@ class _SettingPageState extends State<SettingPage> with WidgetsBindingObserver {
                   onTap: () {
                     Navigator.pop(context);
                   },
-                  child: SizedBox(
+                  child: const SizedBox(
                     height: 60,
                     child: Row(
-                      children: const [
+                      children: [
                         SizedBox(width: 24),
                         Image(
                           width: 18,
@@ -130,7 +130,7 @@ class _SettingPageState extends State<SettingPage> with WidgetsBindingObserver {
 
                       renderItemWidget(
                         'images/dev.png',
-                        Colors.teal,
+                        Colors.blueGrey,
                         42,
                         'Hey, somrit here!',
                         () async {
@@ -298,9 +298,9 @@ class _SettingPageState extends State<SettingPage> with WidgetsBindingObserver {
                   );
                   isCopying = false;
                 },
-                child: SingleChildScrollView(
+                child: const SingleChildScrollView(
                   child: Wrap(
-                    children: const [
+                    children: [
                       Text(
                         '* Custom key can use the APP without restrictions.',
                         textAlign: TextAlign.start,
@@ -405,8 +405,8 @@ class _SettingPageState extends State<SettingPage> with WidgetsBindingObserver {
                     hintText: 'Please input your OpenAI host'),
               ),
               const SizedBox(height: 12),
-              Wrap(
-                children: const [
+              const Wrap(
+                children: [
                   Text(
                     "You can set openai host where access to the official OpenAI host is restricted or unavailable, "
                     "allowing you to configure an alternative host for the specific needs.\n"

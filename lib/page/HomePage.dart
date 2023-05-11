@@ -12,6 +12,7 @@ import 'package:hypebard/utils/Utils.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 import 'package:vibration/vibration.dart';
+import 'package:animated_text_kit/animated_text_kit.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -178,7 +179,7 @@ class _HomePageState extends State<HomePage> {
                       _renderChatListWidget(
                         store.homeHistoryList,
                       ),
-                    _renderTitle("Hey, I am Bard."),
+                    _renderTitle(""),
                     _renderChatModelListWidget(),
                   ],
                 ),
@@ -190,34 +191,52 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
-
   Widget _renderTitle(
-    String text, {
-    Widget? rightContent,
-  }) {
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      margin: const EdgeInsets.fromLTRB(0, 20, 0, 8),
-      padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Text(
-            text,
-            textAlign: TextAlign.start,
+  String text, {
+  Widget? rightContent,
+}) {
+  return Container(
+    width: MediaQuery.of(context).size.width,
+    margin: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+    padding: const EdgeInsets.fromLTRB(2, 0, 2, 0),
+    child: Row(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        const SizedBox(width: 20.0, height: 30),
+        const Text(
+          'Hey, I am ',
+          style: TextStyle(
+            fontSize: 24.0,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        SizedBox(
+          height: 40.0, // Adjust the height as needed
+          child: DefaultTextStyle(
             style: const TextStyle(
-              color: Color.fromRGBO(1, 2, 6, 1),
-              fontSize: 22,
-              height: 1,
-              fontWeight: FontWeight.bold,
+              color: Colors.black,
+              fontSize: 24.0,
+              fontFamily: 'Poppins',
+            ),
+            child: AnimatedTextKit(
+              repeatForever: true,
+              animatedTexts: [
+                RotateAnimatedText('Awesome.'),
+                RotateAnimatedText('Different.'),
+                RotateAnimatedText('Quick-witted.'),
+                RotateAnimatedText('Smart.'),
+                RotateAnimatedText('Phenomenal.'),
+                RotateAnimatedText('Incredible.'),
+                RotateAnimatedText('HypeBard.',),
+              ],
             ),
           ),
-          if (rightContent != null) rightContent,
-        ],
-      ),
-    );
-  }
+        ),
+      ],
+    ),
+  );
+}
+
 
   Widget _renderChatModelListWidget() {
     List<Widget> list = [];
