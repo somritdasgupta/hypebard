@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:hypebard/stores/AIChatStore.dart';
 import 'package:hypebard/utils/Chatgpt.dart';
-import 'package:hypebard/utils/Config.dart';
 import 'package:provider/provider.dart';
 import 'package:sp_util/sp_util.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -100,64 +99,57 @@ class _SettingPageState extends State<SettingPage> with WidgetsBindingObserver {
           body: Container(
             color: const Color(0xFFF6F1F1),
             child: SafeArea(
-              child: Container(
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      renderItemWidget(
-                        'images/key_icon.png',
-                        Colors.lightGreen,
-                        26,
-                        'Customize OpenAI API Key',
-                        () async {
-                          String cacheKey = ChatGPT.getCacheOpenAIKey();
-                          _keyTextEditingController.text = cacheKey;
-                          _showCustomOpenAIKeyDialog();
-                        },
-                      ),
-
-                      renderItemWidget(
-                        'images/url_icon.png',
-                        Colors.deepPurpleAccent,
-                        26,
-                        'Customize OpenAI Base URL',
-                        () async {
-                          String cacheUrl = ChatGPT.getCacheOpenAIBaseUrl();
-                          _urlTextEditingController.text = cacheUrl;
-                          _showCustomOpenAIUrlDialog();
-                        },
-                      ),
-
-                      renderItemWidget(
-                        'images/dev.png',
-                        Colors.blueGrey,
-                        42,
-                        'Hey, somrit here!',
-                        () async {
-                          final Uri url = Uri.parse(
-                              'https://www.linkedin.com/in/somritdasgupta');
-                          launchURL(url.toString());
-                        },
-                      ),
-
-                      /// Empty storage
-                      if (Config.isDebug)
-                        renderItemWidget(
-                          'images/debug_icon.png',
-                          Colors.indigo,
-                          22,
-                          'Clear Data',
-                          () {
-                            ChatGPT.storage.erase();
-                            final store = Provider.of<AIChatStore>(context,
-                                listen: false);
-                            store.syncStorage();
-                            SpUtil.clear();
-                            EasyLoading.showToast('Data cleared successfully');
-                          },
-                        ),
-                    ],
-                  ),
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    renderItemWidget(
+                      'images/key_icon.png',
+                      Colors.lightGreen,
+                      26,
+                      'Customize OpenAI API Key',
+                      () async {
+                        String cacheKey = ChatGPT.getCacheOpenAIKey();
+                        _keyTextEditingController.text = cacheKey;
+                        _showCustomOpenAIKeyDialog();
+                      },
+                    ),
+                    renderItemWidget(
+                      'images/url_icon.png',
+                      Colors.deepPurpleAccent,
+                      26,
+                      'Customize OpenAI Base URL',
+                      () async {
+                        String cacheUrl = ChatGPT.getCacheOpenAIBaseUrl();
+                        _urlTextEditingController.text = cacheUrl;
+                        _showCustomOpenAIUrlDialog();
+                      },
+                    ),
+                    renderItemWidget(
+                      'images/dev.png',
+                      Colors.teal,
+                      42,
+                      'Hey, somrit here!',
+                      () async {
+                        final Uri url = Uri.parse(
+                            'https://www.linkedin.com/in/somritdasgupta');
+                        launchURL(url.toString());
+                      },
+                    ),
+                    renderItemWidget(
+                      'images/debug_icon.png',
+                      Colors.indigo,
+                      22,
+                      'Clear Data',
+                      () {
+                        ChatGPT.storage.erase();
+                        final store =
+                            Provider.of<AIChatStore>(context, listen: false);
+                        store.syncStorage();
+                        SpUtil.clear();
+                        EasyLoading.showToast('Data cleared successfully');
+                      },
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -196,12 +188,12 @@ class _SettingPageState extends State<SettingPage> with WidgetsBindingObserver {
       child: Column(
         children: [
           Container(
-            margin: const EdgeInsets.all(10),
+            margin: const EdgeInsets.all(15),
             padding:
                 const EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 20),
             decoration: BoxDecoration(
               color: const Color(0xA5B7D5AF),
-              borderRadius: BorderRadius.circular(15),
+              borderRadius: BorderRadius.circular(20),
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -250,9 +242,6 @@ class _SettingPageState extends State<SettingPage> with WidgetsBindingObserver {
                   ),
               ],
             ),
-          ),
-          const Divider(
-            height: 15,
           ),
         ],
       ),
@@ -462,15 +451,14 @@ class _SettingPageState extends State<SettingPage> with WidgetsBindingObserver {
   }
 
   void launchURL(String url) async {
-  try {
-    await launch(
-      url,
-      forceSafariVC: false,
-      forceWebView: false,
-    );
-  } catch (e) {
-    throw 'Could not launch $url';
+    try {
+      await launch(
+        url,
+        forceSafariVC: false,
+        forceWebView: false,
+      );
+    } catch (e) {
+      throw 'Could not launch $url';
+    }
   }
-}
-
 }

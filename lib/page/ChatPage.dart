@@ -318,7 +318,6 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   Widget _genMessageItemWidget(Map message, int index) {
-
     return Container(
       color: Color(0xFFF6F1F1),
       padding: const EdgeInsets.fromLTRB(12, 6, 12, 6),

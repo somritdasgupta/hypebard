@@ -5,6 +5,7 @@ import 'package:hypebard/stores/AIChatStore.dart';
 import 'package:hypebard/utils/Time.dart';
 import 'package:hypebard/utils/Utils.dart';
 import 'package:provider/provider.dart';
+import 'package:vibration/vibration.dart';
 
 class ChatHistoryPage extends StatefulWidget {
   const ChatHistoryPage({Key? key}) : super(key: key);
@@ -48,10 +49,10 @@ class _ChatHistoryPageState extends State<ChatHistoryPage> {
               onTap: () {
                 Navigator.pop(context);
               },
-              child: SizedBox(
+              child: const SizedBox(
                 height: 60,
                 child: Row(
-                  children: const [
+                  children: [
                     SizedBox(width: 24),
                     Image(
                       width: 18,
@@ -94,36 +95,10 @@ class _ChatHistoryPageState extends State<ChatHistoryPage> {
     );
   }
 
-  Widget _renderChatListWidget(List chatList) {
-    // List<Widget> list = [];
-    // for (var i = 0; i < chatList.length; i++) {
-    //   list.add(
-    //     _genChatItemWidget(chatList[i]),
-    //   );
-    // }
-    // return SingleChildScrollView(
-    //   child: Column(
-    //     crossAxisAlignment: CrossAxisAlignment.start,
-    //     children: [
-    //       ...list,
-    //       const SizedBox(height: 20),
-    //     ],
-    //   ),
-    // );
-
-    return ListView.builder(
-      reverse: false,
-      itemCount: chatList.length,
-      itemBuilder: (BuildContext context, int index) {
-        return _genChatItemWidget(chatList[index]);
-      },
-    );
-  }
-
   Widget _genChatItemWidget(Map chat) {
     return InkWell(
-      highlightColor: Colors.transparent,
-      splashColor: Colors.transparent,
+      highlightColor: Colors.white,
+      splashColor: Colors.white,
       onTap: () {
         final store = Provider.of<AIChatStore>(context, listen: false);
         store.fixChatList();
@@ -139,58 +114,82 @@ class _ChatHistoryPageState extends State<ChatHistoryPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(height: 12),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const SizedBox(width: 20),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    if (chat['updatedTime'] != null)
-                      Text(
-                        TimeUtils().formatTime(
-                          chat['updatedTime'],
-                          format: 'dd/MM/yyyy -> HH:mm',
-                        ),
-                        softWrap: true,
-                        style: const TextStyle(
-                          color: Colors.black,
-                          fontSize: 16,
-                          height: 24 / 16,
-                        ),
-                      ),
-                    const SizedBox(height: 8),
-                    Text(
-                      chat['messages'][0]['content'],
-                      softWrap: true,
-                      style: const TextStyle(
-                        color: Colors.black,
-                        fontSize: 16,
-                        height: 24 / 16,
+          const SizedBox(height: 10),
+          Container(
+            width: MediaQuery.of(context).size.width,
+            padding: const EdgeInsets.fromLTRB(2, 0, 2, 0),
+            child: Container(
+              clipBehavior: Clip.antiAlias,
+              decoration: BoxDecoration(
+                color: const Color(0xA5D5AFAF),
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: Container(
+                      padding: const EdgeInsets.fromLTRB(20, 20, 0, 20),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          if (chat['updatedTime'] != null)
+                            Text(
+                              TimeUtils().formatTime(
+                                chat['updatedTime'],
+                                format: 'dd/MM/yyyy ➜ HH:mm',
+                              ),
+                              softWrap: false,
+                              style: const TextStyle(
+                                color: Colors.black54,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                                height: 24 / 16,
+                              ),
+                            ),
+                          const SizedBox(height: 8),
+                          Text(
+                            chat['messages'][0]['content'],
+                            softWrap: true,
+                            style: const TextStyle(
+                              color: Colors.black87,
+                              fontSize: 16,
+                              height: 24 / 16,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                  IconButton(
+                    icon: const Icon(
+                      Icons.playlist_remove_rounded,
+                      size: 30,
+                    ),
+                    color: Colors.blueGrey,
+                    onPressed: () {
+                      Vibration.vibrate(duration: 50);
+                      _showDeleteConfirmationDialog(context, chat['id']);
+                    },
+                  ),
+                ],
               ),
-              IconButton(
-                icon: const Icon(
-                  Icons.remove_circle_outline_rounded,
-                  size: 30,
-                ),
-                color: const Color.fromARGB(255, 145, 145, 145),
-                onPressed: () {
-                  _showDeleteConfirmationDialog(context, chat['id']);
-                },
-              ),
-            ],
+            ),
           ),
-          const SizedBox(height: 12),
-          const Divider(
-            height: 2,
-            color: Color.fromRGBO(166, 166, 166, 1.0),
-          ),
+          const SizedBox(height: 10),
+        ],
+      ),
+    );
+  }
+
+  Widget _renderChatListWidget(List chatList) {
+    return Container(
+      padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+      child: Column(
+        children: [
+          for (var chat in chatList) _genChatItemWidget(chat),
         ],
       ),
     );

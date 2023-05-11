@@ -57,31 +57,30 @@ class _QuestionInputState extends State<QuestionInput> {
     }
   }
 
- void _startListening() async {
-  if (!_isListening) {
-    bool available = await _speechToText.initialize();
-    if (available) {
-      setState(() {
-        _isListening = true;
-        _transcription = '';
-      });
-      _speechToText.listen(
-        onResult: (result) {
-          setState(() {
-            _transcription = result.recognizedWords;
-            questionController.text= _transcription;
-
-          });
-          if (result.finalResult ) {
-            _stopListening();
-            onQuestionChange(_transcription);
-            onSubmit();
-          }
-        },
-      );
+  void _startListening() async {
+    if (!_isListening) {
+      bool available = await _speechToText.initialize();
+      if (available) {
+        setState(() {
+          _isListening = true;
+          _transcription = '';
+        });
+        _speechToText.listen(
+          onResult: (result) {
+            setState(() {
+              _transcription = result.recognizedWords;
+              questionController.text = _transcription;
+            });
+            if (result.finalResult) {
+              _stopListening();
+              onQuestionChange(_transcription);
+              onSubmit();
+            }
+          },
+        );
+      }
     }
   }
-}
 
   void _stopListening() {
     if (_isListening) {
@@ -269,25 +268,26 @@ class _QuestionInputState extends State<QuestionInput> {
     }
   }
 
- void onQuestionChange(String value) {
-  setState(() {
-    myQuestion = value;
-    if (_isListening) {
-      questionController.text = _transcription;
-      onSubmit();// Update the text field with the transcription
-    }
-  });
-}
+  void onQuestionChange(String value) {
+    setState(() {
+      myQuestion = value;
+      if (_isListening) {
+        questionController.text = _transcription;
+        onSubmit(); // Update the text field with the transcription
+      }
+    });
+  }
 
+  Image _getMicrophoneImage() {
+    String imagePath =
+        _isListening ? 'microphone_active_icon.png' : 'microphone_icon.png';
+    return Image.asset(
+      'images/$imagePath',
+      width: 40,
+      height: 30,
+    );
+  }
 
-Image _getMicrophoneImage() {
-  String imagePath = _isListening ? 'microphone_active_icon.png' : 'microphone_icon.png';
-  return Image.asset(
-    'images/$imagePath',
-    width: 40,
-    height: 30,
-  );
-}
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -310,7 +310,9 @@ Image _getMicrophoneImage() {
               decoration: BoxDecoration(
                 color: Colors.white.withAlpha(500),
                 borderRadius: BorderRadius.circular(50.0),
-                border: Border.all(color: const Color.fromRGBO(70, 20, 75, 0.9254901960784314), width: 5),
+                border: Border.all(
+                    color: const Color.fromRGBO(70, 20, 75, 0.9254901960784314),
+                    width: 5),
                 boxShadow: [
                   BoxShadow(
                     color: Colors.blueGrey.withOpacity(0.5),
@@ -372,41 +374,42 @@ Image _getMicrophoneImage() {
     );
   }
 
-
-Widget renderSubmitBtnWidget() {
-  bool isActive = _transcription.isNotEmpty || !_isGenerating && !_isListening;
-  return Row(
-    children: [
-      GestureDetector(
-        behavior: HitTestBehavior.translucent,
-        onTap: () {
-          if (_isListening) {
-            _stopListening();
-          } else {
-            _startListening();
-          }
-          Vibration.vibrate(duration: 50); // Vibration effect of 50 milliseconds
-        },
-        child: Container(
-          padding: const EdgeInsets.all(8),
-          child: _getMicrophoneImage(),
+  Widget renderSubmitBtnWidget() {
+    bool isActive =
+        _transcription.isNotEmpty || !_isGenerating && !_isListening;
+    return Row(
+      children: [
+        GestureDetector(
+          behavior: HitTestBehavior.translucent,
+          onTap: () {
+            if (_isListening) {
+              _stopListening();
+            } else {
+              _startListening();
+            }
+            Vibration.vibrate(
+                duration: 50); // Vibration effect of 50 milliseconds
+          },
+          child: Container(
+            padding: const EdgeInsets.all(8),
+            child: _getMicrophoneImage(),
           ),
         ),
-      GestureDetector(
-        behavior: HitTestBehavior.translucent,
-        onTap: () {
-          onSubmit();
-        },
-        child: Container(
-          padding: const EdgeInsets.all(8),
-          child: Image.asset(
-            width: 40,
-            height: 30,
-            'images/${isActive ? 'submit_active_icon.png' : 'submit_icon.png'}',
+        GestureDetector(
+          behavior: HitTestBehavior.translucent,
+          onTap: () {
+            onSubmit();
+          },
+          child: Container(
+            padding: const EdgeInsets.all(8),
+            child: Image.asset(
+              width: 40,
+              height: 30,
+              'images/${isActive ? 'submit_active_icon.png' : 'submit_icon.png'}',
+            ),
           ),
         ),
-      ),
-    ],
-  );
-}
+      ],
+    );
+  }
 }

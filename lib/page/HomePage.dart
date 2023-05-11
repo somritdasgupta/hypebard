@@ -114,17 +114,18 @@ class _HomePageState extends State<HomePage> {
             ),
           ],
         ),
-        backgroundColor: Color(0xFFF6F1F1),
+        backgroundColor: const Color(0xFFF6F1F1),
         elevation: 0,
         actions: [
           const SizedBox(width: 6),
           IconButton(
-            icon: const Icon(Icons.admin_panel_settings_rounded),
+            icon: const Icon(Icons.admin_panel_settings_outlined),
             splashColor: Colors.black54,
             iconSize: 40,
             color: const Color.fromRGBO(98, 98, 98, 1.0),
             onPressed: () {
-              Vibration.vibrate(duration: 50); // Vibration effect of 50 milliseconds
+              Vibration.vibrate(
+                  duration: 50); // Vibration effect of 50 milliseconds
               // ChatGPT.genImage('Robot avatar, cute');
               Utils.jumpPage(context, const SettingPage());
             },
@@ -143,34 +144,63 @@ class _HomePageState extends State<HomePage> {
                     if (store.homeHistoryList.length > 0)
                       _renderTitle(
                         'Your Rewinds.',
-                        rightContent: SizedBox(
-                          width: 45,
-                          child: GestureDetector(
-                            onTap: () {
-                              Utils.jumpPage(context, const ChatHistoryPage());
-                            },
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                const Text(
-                                  'All',
-                                  textAlign: TextAlign.start,
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    height: 18 / 16,
-                                    fontWeight: FontWeight.bold,
+                        animateText: false,
+                        rightContent: Flexible(
+                          child: SizedBox(
+                            width: double.maxFinite,
+                            child: GestureDetector(
+                              onTap: () {
+                                HapticFeedback.vibrate();
+                                Utils.jumpPage(
+                                    context, const ChatHistoryPage());
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 6, horizontal: 12),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(15),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.withOpacity(
+                                          0.1), // Customize the shadow color here
+                                      blurRadius: 15,
+                                      offset: const Offset(0, 4),
+                                    ),
+                                  ],
+                                  gradient: const LinearGradient(
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
+                                    colors: [
+                                      Color(
+                                          0xFFB6C5A4), // Customize the gradient start color here
+                                      Color(
+                                          0xFFF6F1F1), // Customize the gradient end color here
+                                    ],
                                   ),
                                 ),
-                                Container(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(0, 0, 8, 0),
-                                  height: 16,
-                                  child: const Image(
-                                    image: AssetImage('images/arrow_icon.png'),
-                                  ),
+                                child: const Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'More',
+                                      textAlign: TextAlign.start,
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        height: 18 / 16,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black54, // Customize the text color here
+                                      ),
+                                    ),
+                                    SizedBox(width: 8),
+                                    Image(
+                                      image:
+                                          AssetImage('images/arrow_icon.png'),
+                                      height: 16,
+                                    ),
+                                  ],
                                 ),
-                              ],
+                              ),
                             ),
                           ),
                         ),
@@ -179,7 +209,7 @@ class _HomePageState extends State<HomePage> {
                       _renderChatListWidget(
                         store.homeHistoryList,
                       ),
-                    _renderTitle(""),
+                    _renderTitle("Hey, I am"),
                     _renderChatModelListWidget(),
                   ],
                 ),
@@ -191,52 +221,69 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
+
   Widget _renderTitle(
-  String text, {
-  Widget? rightContent,
-}) {
-  return Container(
-    width: MediaQuery.of(context).size.width,
-    margin: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-    padding: const EdgeInsets.fromLTRB(2, 0, 2, 0),
-    child: Row(
-      mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-        const SizedBox(width: 20.0, height: 30),
-        const Text(
-          'Hey, I am ',
-          style: TextStyle(
-            fontSize: 24.0,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        SizedBox(
-          height: 40.0, // Adjust the height as needed
-          child: DefaultTextStyle(
-            style: const TextStyle(
-              color: Colors.black,
-              fontSize: 24.0,
-              fontFamily: 'Poppins',
-            ),
-            child: AnimatedTextKit(
-              repeatForever: true,
-              animatedTexts: [
-                RotateAnimatedText('Awesome.'),
-                RotateAnimatedText('Different.'),
-                RotateAnimatedText('Quick-witted.'),
-                RotateAnimatedText('Smart.'),
-                RotateAnimatedText('Phenomenal.'),
-                RotateAnimatedText('Incredible.'),
-                RotateAnimatedText('HypeBard.',),
+    String text, {
+    Widget? rightContent,
+    TextStyle? textStyle,
+    bool animateText = true,
+  }) {
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      margin: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+      padding: const EdgeInsets.fromLTRB(2, 0, 2, 0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          const SizedBox(width: 20.0, height: 30),
+          Expanded(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Flexible(
+                  child: Text(
+                    text,
+                    style: textStyle ??
+                        const TextStyle(
+                          fontSize: 24.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                  ),
+                ),
+                if (animateText)
+                  Flexible(
+                    flex: 1,
+                    child: FractionallySizedBox(
+                      alignment: Alignment.topRight,
+                      widthFactor: 1.25,
+                      child: SizedBox(
+                        height: 40.0,
+                        child: DefaultTextStyle(
+                          style: const TextStyle(
+                            color: Colors.black,
+                            fontSize: 24.0,
+                            fontFamily: 'Poppins',
+                          ),
+                          child: AnimatedTextKit(
+                            repeatForever: true,
+                            animatedTexts: [
+                              RotateAnimatedText('Awesome.'),
+                              RotateAnimatedText('Incredible.'),
+                              RotateAnimatedText('hypeBard.'),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
               ],
             ),
           ),
-        ),
-      ],
-    ),
-  );
-}
-
+          rightContent ?? Container(),
+        ],
+      ),
+    );
+  }
 
   Widget _renderChatModelListWidget() {
     List<Widget> list = [];
@@ -363,58 +410,71 @@ class _HomePageState extends State<HomePage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(height: 12),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    if (chat['updatedTime'] != null)
-                      Text(
-                        TimeUtils().formatTime(
-                          chat['updatedTime'],
-                          format: 'dd/MM/yyyy -> HH:mm',
-                        ),
-                        softWrap: true,
-                        style: const TextStyle(
-                          color: Colors.black,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          height: 24 / 16,
-                        ),
-                      ),
-                    const SizedBox(height: 8),
-                    Text(
-                      chat['messages'][0]['content'],
-                      softWrap: true,
-                      style: const TextStyle(
-                        color: Colors.black,
-                        fontSize: 16,
-                        height: 24 / 16,
+          const SizedBox(height: 10),
+          Container(
+            width: MediaQuery.of(context).size.width,
+            padding: const EdgeInsets.fromLTRB(2, 0, 2, 0),
+            child: Container(
+              clipBehavior: Clip.antiAlias,
+              decoration: BoxDecoration(
+                color: const Color(0xA5D5AFAF),
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: Container(
+                      padding: const EdgeInsets.fromLTRB(20, 20, 0, 20),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          if (chat['updatedTime'] != null)
+                            Text(
+                              TimeUtils().formatTime(
+                                chat['updatedTime'],
+                                format: 'dd/MM/yyyy ➜ HH:mm',
+                              ),
+                              softWrap: false,
+                              style: const TextStyle(
+                                color: Colors.black54,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                                height: 24 / 16,
+                              ),
+                            ),
+                          const SizedBox(height: 8),
+                          Text(
+                            chat['messages'][0]['content'],
+                            softWrap: true,
+                            style: const TextStyle(
+                              color: Colors.black87,
+                              fontSize: 16,
+                              height: 24 / 16,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                  IconButton(
+                    icon: const Icon(
+                      Icons.playlist_remove_rounded,
+                      size: 30,
+                    ),
+                    color: Colors.blueGrey,
+                    onPressed: () {
+                      Vibration.vibrate(duration: 50);
+                      _showDeleteConfirmationDialog(context, chat['id']);
+                    },
+                  ),
+                ],
               ),
-              IconButton(
-                icon: const Icon(
-                  Icons.remove_circle_outline_rounded,
-                  size: 30,
-                ),
-                color: const Color.fromARGB(255, 145, 145, 145),
-                onPressed: () {
-                  _showDeleteConfirmationDialog(context, chat['id']);
-                },
-              ),
-            ],
+            ),
           ),
-          const SizedBox(height: 12),
-          const Divider(
-            height: 2,
-            color: Color.fromRGBO(166, 166, 166, 1.0),
-          ),
+          const SizedBox(height: 10),
         ],
       ),
     );
@@ -440,6 +500,7 @@ class _HomePageState extends State<HomePage> {
             TextButton(
               child: const Text('Confirm'),
               onPressed: () async {
+                Vibration.vibrate(duration: 50);
                 await store.deleteChatById(chatId);
                 Navigator.of(context).pop(true);
               },
