@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -53,42 +54,54 @@ class _ChatPageState extends State<ChatPage> {
 
     _flutterTts.setStartHandler(() {
       setState(() {
-        print("Playing");
+        if (kDebugMode) {
+          print("Playing");
+        }
         _ttsState = TtsState.playing;
       });
     });
 
     _flutterTts.setCompletionHandler(() {
       setState(() {
-        print("Complete");
+        if (kDebugMode) {
+          print("Complete");
+        }
         _ttsState = TtsState.stopped;
       });
     });
 
     _flutterTts.setCancelHandler(() {
       setState(() {
-        print("Cancel");
+        if (kDebugMode) {
+          print("Cancel");
+        }
         _ttsState = TtsState.stopped;
       });
     });
 
     _flutterTts.setPauseHandler(() {
       setState(() {
-        print("Paused");
+        if (kDebugMode) {
+          print("Paused");
+        }
         _ttsState = TtsState.paused;
       });
     });
 
     _flutterTts.setContinueHandler(() {
       setState(() {
-        print("Continued");
+        if (kDebugMode) {
+          print("Continued");
+        }
         _ttsState = TtsState.continued;
       });
     });
 
     _flutterTts.setErrorHandler((msg) {
       setState(() {
-        print("error: $msg");
+        if (kDebugMode) {
+          print("error: $msg");
+        }
         _ttsState = TtsState.stopped;
       });
     });
@@ -124,11 +137,11 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   void scrollToBottom() {
-    // _listController.animateTo(
-    //   _listController.position.maxScrollExtent,
-    //   duration: const Duration(milliseconds: 500),
-    //   curve: Curves.easeInOut,
-    // );
+    _listController.animateTo(
+      _listController.position.maxScrollExtent,
+      duration: const Duration(milliseconds: 500),
+      curve: Curves.easeInOut,
+    );
     if (_listController.hasClients) {
       _listController.jumpTo(_listController.position.maxScrollExtent);
     }
@@ -164,9 +177,11 @@ class _ChatPageState extends State<ChatPage> {
                         child: Row(
                           children: [
                             SizedBox(width: 24),
-                            Image(
-                              width: 18,
-                              image: AssetImage('images/back_icon.png'),
+                            Icon(
+                              Icons.arrow_back_ios_rounded,
+                              size: 30,
+                              weight: 100,
+                              color: Colors.black,
                             ),
                             SizedBox(width: 12),
                             Text(
@@ -189,7 +204,7 @@ class _ChatPageState extends State<ChatPage> {
             )
           ],
         ),
-        backgroundColor: Color(0xFFF6F1F1),
+        backgroundColor: const Color(0xFFF6F1F1),
         elevation: 0,
         actions: const [
           SizedBox(width: 20),
@@ -234,7 +249,7 @@ class _ChatPageState extends State<ChatPage> {
               borderRadius: BorderRadius.circular(25.0),
             ),
             child: InkWell(
-              splashColor: Color(0xFFF6F1F1),
+              splashColor: const Color(0xFFF6F1F1),
               highlightColor: const Color.fromRGBO(192, 238, 221, 1.0),
               borderRadius: BorderRadius.circular(25.0),
               onTap: () {
@@ -319,7 +334,7 @@ class _ChatPageState extends State<ChatPage> {
 
   Widget _genMessageItemWidget(Map message, int index) {
     return Container(
-      color: Color(0xFFF6F1F1),
+      color: const Color(0xFFF6F1F1),
       padding: const EdgeInsets.fromLTRB(12, 6, 12, 6),
       child: _renderMessageItem(message, index),
     );
@@ -329,12 +344,12 @@ class _ChatPageState extends State<ChatPage> {
     String role = message['role'];
     String defaultAvatar = 'images/bard.png';
     String defaultRoleName = 'Bard';
-    Color defaultColor = const Color(0x848A9169);
+    Color defaultColor = const Color(0x8B46144B);
     Color defaultTextColor = Colors.black;
     String defaultTextPrefix = '';
     List<Widget> defaultIcons = [
       _renderVoiceWidget(message),
-      const SizedBox(width: 6),
+      const SizedBox(width: 8),
       _renderShareWidget(message),
       const SizedBox(width: 8),
       _renderCopyWidget(message),
@@ -344,7 +359,7 @@ class _ChatPageState extends State<ChatPage> {
     if (role == 'user') {
       defaultAvatar = 'images/you.png';
       defaultRoleName = 'You';
-      defaultColor = const Color(0xA5C2DABC);
+      defaultColor = const Color(0x848A9169);
       defaultIcons = [];
     } else if (role == 'error') {
       defaultTextColor = const Color.fromRGBO(5, 0, 0, 0.796078431372549);
@@ -364,71 +379,82 @@ class _ChatPageState extends State<ChatPage> {
       );
     }
     return Container(
-      clipBehavior: Clip.antiAlias,
-      padding: const EdgeInsets.fromLTRB(12, 16, 12, 16),
+      margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 12),
       decoration: BoxDecoration(
-        color: defaultColor,
-        borderRadius: BorderRadius.circular(16.0),
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomCenter,
+          colors: [const Color(0xFFF0F2F5), defaultColor],
+        ),
+        borderRadius: BorderRadius.circular(20.0),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.blueGrey.withOpacity(0.2),
+            offset: const Offset(0, 2),
+            blurRadius: 4,
+          ),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Container(
-                padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                child: Row(
-                  children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(30.0),
-                      clipBehavior: Clip.antiAlias,
-                      child: Image(
-                        width: 36,
-                        height: 36,
-                        image: AssetImage(defaultAvatar),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(12, 16, 12, 0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                  child: Row(
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(15.0),
+                        clipBehavior: Clip.antiAlias,
+                        child: Image(
+                          width: 36,
+                          height: 36,
+                          image: AssetImage(defaultAvatar),
+                        ),
                       ),
-                    ),
-                    const SizedBox(width: 8),
-                    Text(
-                      defaultRoleName,
-                      softWrap: true,
-                      style: const TextStyle(
-                        color: Colors.black,
-                        fontSize: 18,
-                        height: 24 / 16,
-                        fontWeight: FontWeight.bold,
+                      const SizedBox(width: 8),
+                      Text(
+                        defaultRoleName,
+                        softWrap: true,
+                        style: const TextStyle(
+                          color: Colors.black,
+                          fontSize: 18,
+                          height: 24 / 16,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-              ),
-              Row(
-                children: defaultIcons,
-              ),
-            ],
-          ),
-          const SizedBox(height: 10),
-          const Divider(
-            height: 2,
-            color: Color.fromRGBO(124, 119, 119, 1.0),
-          ),
-          const SizedBox(height: 10),
-          customContent ??
-              MarkdownBody(
-                data: '$defaultTextPrefix${message['content']}',
-                // data: 'This is a line\nThis is another line'.replaceAll('\n', '<br>'),
-                shrinkWrap: true,
-                selectable: true,
-                styleSheet: MarkdownStyleSheet(
-                  textScaleFactor: 1.1,
-                  textAlign: WrapAlignment.start,
-                  p: TextStyle(
-                    height: 1.5,
-                    color: defaultTextColor,
+                    ],
                   ),
                 ),
-              ),
+                Row(
+                  children: defaultIcons,
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 10),
+          const SizedBox(height: 10),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(12, 0, 12, 16),
+            child: customContent ??
+                MarkdownBody(
+                  data: '$defaultTextPrefix${message['content']}',
+                  shrinkWrap: true,
+                  selectable: true,
+                  styleSheet: MarkdownStyleSheet(
+                    textScaleFactor: 1.1,
+                    textAlign: WrapAlignment.start,
+                    p: TextStyle(
+                      height: 1.5,
+                      color: defaultTextColor,
+                    ),
+                  ),
+                ),
+          ),
         ],
       ),
     );

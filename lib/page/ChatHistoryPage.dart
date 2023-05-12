@@ -54,9 +54,11 @@ class _ChatHistoryPageState extends State<ChatHistoryPage> {
                 child: Row(
                   children: [
                     SizedBox(width: 24),
-                    Image(
-                      width: 18,
-                      image: AssetImage('images/back_icon.png'),
+                    Icon(
+                      Icons.arrow_back_ios_rounded,
+                      size: 30,
+                      weight: 100,
+                      color: Colors.black,
                     ),
                     SizedBox(width: 12),
                     Text(
@@ -96,102 +98,129 @@ class _ChatHistoryPageState extends State<ChatHistoryPage> {
   }
 
   Widget _genChatItemWidget(Map chat) {
-    return InkWell(
-      highlightColor: Colors.white,
-      splashColor: Colors.white,
-      onTap: () {
-        final store = Provider.of<AIChatStore>(context, listen: false);
-        store.fixChatList();
-        Utils.jumpPage(
-          context,
-          ChatPage(
-            chatId: chat['id'],
-            autofocus: false,
-            chatType: chat['ai']['type'],
+    return Dismissible(
+      key: Key(chat['id']),
+      background: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          gradient: LinearGradient(
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight,
+            colors: [Colors.red.withOpacity(0.8), Colors.red.withOpacity(0.2)],
           ),
-        );
+        ),
+        margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+        padding: const EdgeInsets.only(right: 16.0),
+        alignment: Alignment.centerRight,
+        child: const Icon(
+          Icons.delete_outline_rounded,
+          color: Colors.pinkAccent,
+          size: 30,
+        ),
+      ),
+      direction: DismissDirection.endToStart,
+      onDismissed: (direction) {
+        Vibration.vibrate(duration: 50);
+        final store = Provider.of<AIChatStore>(context, listen: false);
+        store.deleteChatById(chat['id']);
       },
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const SizedBox(height: 10),
-          Container(
-            width: MediaQuery.of(context).size.width,
-            padding: const EdgeInsets.fromLTRB(2, 0, 2, 0),
-            child: Container(
-              clipBehavior: Clip.antiAlias,
-              decoration: BoxDecoration(
-                color: const Color(0xA5D5AFAF),
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: Container(
-                      padding: const EdgeInsets.fromLTRB(20, 20, 0, 20),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          if (chat['updatedTime'] != null)
+      child: InkWell(
+        highlightColor: Colors.white,
+        splashColor: Colors.white,
+        onTap: () {
+          final store = Provider.of<AIChatStore>(context, listen: false);
+          store.fixChatList();
+          Utils.jumpPage(
+            context,
+            ChatPage(
+              chatId: chat['id'],
+              autofocus: false,
+              chatType: chat['ai']['type'],
+            ),
+          );
+        },
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: 10),
+            Container(
+              width: MediaQuery.of(context).size.width,
+              padding: const EdgeInsets.fromLTRB(2, 0, 2, 0),
+              child: Container(
+                clipBehavior: Clip.antiAlias,
+                decoration: BoxDecoration(
+                  color: const Color(0xA5D5AFAF),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: Container(
+                        padding: const EdgeInsets.fromLTRB(20, 20, 0, 20),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            if (chat['updatedTime'] != null)
+                              Text(
+                                TimeUtils().formatTime(
+                                  chat['updatedTime'],
+                                  format: 'dd/MM/yyyy ➜ HH:mm',
+                                ),
+                                softWrap: false,
+                                style: const TextStyle(
+                                  color: Colors.black54,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                  height: 24 / 16,
+                                ),
+                              ),
+                            const SizedBox(height: 8),
                             Text(
-                              TimeUtils().formatTime(
-                                chat['updatedTime'],
-                                format: 'dd/MM/yyyy ➜ HH:mm',
-                              ),
-                              softWrap: false,
+                              chat['messages'][0]['content'],
+                              softWrap: true,
                               style: const TextStyle(
-                                color: Colors.black54,
+                                color: Colors.black87,
                                 fontSize: 16,
-                                fontWeight: FontWeight.w600,
                                 height: 24 / 16,
+                                fontWeight: FontWeight.w500,
                               ),
                             ),
-                          const SizedBox(height: 8),
-                          Text(
-                            chat['messages'][0]['content'],
-                            softWrap: true,
-                            style: const TextStyle(
-                              color: Colors.black87,
-                              fontSize: 16,
-                              height: 24 / 16,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                  IconButton(
-                    icon: const Icon(
-                      Icons.playlist_remove_rounded,
-                      size: 30,
+                    IconButton(
+                      icon: const Icon(
+                        Icons.playlist_remove_rounded,
+                        size: 30,
+                      ),
+                      color: Colors.blueGrey,
+                      onPressed: () {
+                        Vibration.vibrate(duration: 50);
+                        _showDeleteConfirmationDialog(context, chat['id']);
+                      },
                     ),
-                    color: Colors.blueGrey,
-                    onPressed: () {
-                      Vibration.vibrate(duration: 50);
-                      _showDeleteConfirmationDialog(context, chat['id']);
-                    },
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
-          ),
-          const SizedBox(height: 10),
-        ],
+            const SizedBox(height: 10),
+          ],
+        ),
       ),
     );
   }
 
   Widget _renderChatListWidget(List chatList) {
-    return Container(
+    return ListView.builder(
       padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-      child: Column(
-        children: [
-          for (var chat in chatList) _genChatItemWidget(chat),
-        ],
-      ),
+      itemCount: chatList.length,
+      itemBuilder: (BuildContext context, int index) {
+        final chat = chatList[index];
+        return _genChatItemWidget(chat);
+      },
     );
   }
 

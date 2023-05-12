@@ -150,7 +150,7 @@ class _HomePageState extends State<HomePage> {
                             width: double.maxFinite,
                             child: GestureDetector(
                               onTap: () {
-                                HapticFeedback.vibrate();
+                                Vibration.vibrate(duration: 50);
                                 Utils.jumpPage(
                                     context, const ChatHistoryPage());
                               },
@@ -172,7 +172,7 @@ class _HomePageState extends State<HomePage> {
                                     end: Alignment.bottomRight,
                                     colors: [
                                       Color(
-                                          0xFFB6C5A4), // Customize the gradient start color here
+                                          0xFFCC4E6B), // Customize the gradient start color here
                                       Color(
                                           0xFFF6F1F1), // Customize the gradient end color here
                                     ],
@@ -189,14 +189,16 @@ class _HomePageState extends State<HomePage> {
                                         fontSize: 16,
                                         height: 18 / 16,
                                         fontWeight: FontWeight.bold,
-                                        color: Colors.black54, // Customize the text color here
+                                        color: Colors
+                                            .white, // Customize the text color here
                                       ),
                                     ),
                                     SizedBox(width: 8),
-                                    Image(
-                                      image:
-                                          AssetImage('images/arrow_icon.png'),
-                                      height: 16,
+                                    Icon(
+                                      Icons.arrow_forward_ios_rounded,
+                                      size: 16,
+                                      weight: 60,
+                                      color: Colors.white,
                                     ),
                                   ],
                                 ),

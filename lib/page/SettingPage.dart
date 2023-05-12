@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:hypebard/page/PrivacyPolicyPage.dart';
 import 'package:hypebard/stores/AIChatStore.dart';
 import 'package:hypebard/utils/Chatgpt.dart';
 import 'package:provider/provider.dart';
 import 'package:sp_util/sp_util.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:vibration/vibration.dart';
+
+import '../utils/Utils.dart';
 
 class SettingPage extends StatefulWidget {
   const SettingPage({Key? key}) : super(key: key);
@@ -72,9 +76,11 @@ class _SettingPageState extends State<SettingPage> with WidgetsBindingObserver {
                     child: Row(
                       children: [
                         SizedBox(width: 24),
-                        Image(
-                          width: 18,
-                          image: AssetImage('images/back_icon.png'),
+                        Icon(
+                          Icons.arrow_back_ios_rounded,
+                          size: 30,
+                          weight: 100,
+                          color: Colors.black,
                         ),
                         SizedBox(width: 12),
                         Text(
@@ -103,10 +109,10 @@ class _SettingPageState extends State<SettingPage> with WidgetsBindingObserver {
                 child: Column(
                   children: [
                     renderItemWidget(
-                      'images/key_icon.png',
+                      Icons.vpn_key,
                       Colors.lightGreen,
                       26,
-                      'Customize OpenAI API Key',
+                      'Customize OpenAI API',
                       () async {
                         String cacheKey = ChatGPT.getCacheOpenAIKey();
                         _keyTextEditingController.text = cacheKey;
@@ -114,20 +120,21 @@ class _SettingPageState extends State<SettingPage> with WidgetsBindingObserver {
                       },
                     ),
                     renderItemWidget(
-                      'images/url_icon.png',
+                      Icons.link,
                       Colors.deepPurpleAccent,
                       26,
-                      'Customize OpenAI Base URL',
+                      'Customize OpenAI URL',
                       () async {
                         String cacheUrl = ChatGPT.getCacheOpenAIBaseUrl();
                         _urlTextEditingController.text = cacheUrl;
                         _showCustomOpenAIUrlDialog();
                       },
                     ),
+
                     renderItemWidget(
-                      'images/dev.png',
-                      Colors.teal,
-                      42,
+                      Icons.face,
+                      Colors.deepPurple,
+                      26,
                       'Hey, somrit here!',
                       () async {
                         final Uri url = Uri.parse(
@@ -135,8 +142,21 @@ class _SettingPageState extends State<SettingPage> with WidgetsBindingObserver {
                         launchURL(url.toString());
                       },
                     ),
+
                     renderItemWidget(
-                      'images/debug_icon.png',
+                      Icons.privacy_tip_rounded,
+                      Colors.red,
+                      26,
+                      'Privacy Policy',
+                      () async {
+                                Vibration.vibrate(duration: 50);
+                                Utils.jumpPage(
+                                    context, const PrivacyPolicyPage());
+                              },
+                    ),
+
+                    renderItemWidget(
+                      Icons.delete,
                       Colors.indigo,
                       22,
                       'Clear Data',
@@ -173,77 +193,56 @@ class _SettingPageState extends State<SettingPage> with WidgetsBindingObserver {
   }
 
   Widget renderItemWidget(
-    String iconPath,
-    Color iconBgColor,
+    IconData icon,
+    Color iconColor,
     double iconSize,
     String title,
-    GestureTapCallback back, {
-    String rightIconSrc = 'images/arrow_icon.png',
-  }) {
+    VoidCallback onPressed,
+  ) {
     return InkWell(
-      highlightColor: Colors.transparent,
-      splashColor: Colors.transparent,
-      hoverColor: Colors.yellowAccent,
-      onTap: back,
-      child: Column(
-        children: [
-          Container(
-            margin: const EdgeInsets.all(15),
-            padding:
-                const EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 20),
-            decoration: BoxDecoration(
-              color: const Color(0xA5B7D5AF),
-              borderRadius: BorderRadius.circular(20),
+      onTap: onPressed,
+      child: Container(
+        margin: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+        padding: const EdgeInsets.all(15),
+        decoration: BoxDecoration(
+          color: Colors.pink[350],
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.pinkAccent.withOpacity(0.4),
+              offset: const Offset(0, 2),
+              blurRadius: 10,
             ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  width: 50,
-                  height: 50,
-                  decoration: BoxDecoration(
-                    color: iconBgColor,
-                    borderRadius: const BorderRadius.all(Radius.circular(10)),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      SizedBox(
-                        width: iconSize,
-                        height: iconSize,
-                        child: Image(
-                          image: AssetImage(iconPath),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(width: 18),
-                Expanded(
-                  child: Text(
-                    title,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                        color: Colors.black87,
-                        fontSize: 16,
-                        fontWeight: FontWeight.normal),
-                  ),
-                ),
-                if (rightIconSrc != '')
-                  Row(
-                    children: [
-                      Image(
-                        image: AssetImage(rightIconSrc),
-                        width: 18,
-                      ),
-                    ],
-                  ),
-              ],
+          ],
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: const BoxDecoration(
+                color: Colors.white60,
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                icon,
+                color: iconColor,
+                size: iconSize,
+              ),
             ),
-          ),
-        ],
+            const SizedBox(width: 16),
+            Expanded(
+              child: Text(
+                title,
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black87,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -282,7 +281,7 @@ class _SettingPageState extends State<SettingPage> with WidgetsBindingObserver {
                     ),
                   );
                   EasyLoading.showToast(
-                    'Copy successfully!',
+                    'Copied successfully!',
                     dismissOnTap: true,
                   );
                   isCopying = false;
