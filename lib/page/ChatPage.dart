@@ -506,7 +506,7 @@ class _ChatPageState extends State<ChatPage> {
           ),
         );
         EasyLoading.showToast(
-          'Copy successfully!',
+          'Copied successfully',
           dismissOnTap: true,
         );
         _isCopying = false;

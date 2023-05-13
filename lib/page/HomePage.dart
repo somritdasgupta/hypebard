@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hypebard/components/QuestionInput.dart';
@@ -82,7 +83,6 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final store = Provider.of<AIChatStore>(context, listen: true);
-
     return Scaffold(
       appBar: AppBar(
         systemOverlayStyle: SystemUiOverlayStyle.dark,
@@ -90,26 +90,42 @@ class _HomePageState extends State<HomePage> {
         toolbarHeight: 70,
         automaticallyImplyLeading: true,
         titleSpacing: 0,
-        title: Wrap(
-          crossAxisAlignment: WrapCrossAlignment.center,
+        title: Stack(
+          alignment: Alignment.centerLeft,
           children: [
-            const SizedBox(width: 24),
-            ClipRRect(
-              borderRadius: BorderRadius.circular(10.0),
-              clipBehavior: Clip.antiAlias,
-              child: const Image(
-                width: 36,
-                height: 36,
-                image: AssetImage('images/logo.png'),
+            PhysicalModel(
+              color: Colors.transparent,
+              elevation: 0,
+              borderRadius: const BorderRadius.only(
+                topRight: Radius.circular(20.0),
+                bottomRight: Radius.circular(20.0),
+              ),
+              shadowColor: Colors.black.withOpacity(0.2),
+              child: const ClipRRect(
+                borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(20.0),
+                  bottomRight: Radius.circular(20.0),
+                ),
+                child: Image(
+                  width: 180,
+                  height: 45,
+                  colorBlendMode: BlendMode.clear,
+                  filterQuality: FilterQuality.high,
+                  isAntiAlias: true,
+                  alignment: Alignment.centerLeft,
+                  image: AssetImage('images/hypeBard.png'),
+                ),
               ),
             ),
-            const SizedBox(width: 8),
-            Text(
-              Config.appName,
-              style: const TextStyle(
-                color: Color.fromRGBO(54, 54, 54, 1.0),
-                fontSize: 26,
-                height: 0,
+            ClipRRect(
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(20.0),
+                bottomLeft: Radius.circular(20.0),
+              ),
+              child: Container(
+                width: 180,
+                height: 45,
+                color: Colors.transparent,
               ),
             ),
           ],
@@ -119,14 +135,12 @@ class _HomePageState extends State<HomePage> {
         actions: [
           const SizedBox(width: 6),
           IconButton(
-            icon: const Icon(Icons.admin_panel_settings_outlined),
+            icon: const Icon(Icons.hub_rounded),
             splashColor: Colors.black54,
-            iconSize: 40,
+            iconSize: 35,
             color: const Color.fromRGBO(98, 98, 98, 1.0),
             onPressed: () {
-              Vibration.vibrate(
-                  duration: 50); // Vibration effect of 50 milliseconds
-              // ChatGPT.genImage('Robot avatar, cute');
+              Vibration.vibrate(duration: 50);
               Utils.jumpPage(context, const SettingPage());
             },
           ),
@@ -158,18 +172,18 @@ class _HomePageState extends State<HomePage> {
                                 padding: const EdgeInsets.symmetric(
                                     vertical: 6, horizontal: 12),
                                 decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(15),
+                                  borderRadius: BorderRadius.circular(20),
                                   boxShadow: [
                                     BoxShadow(
                                       color: Colors.grey.withOpacity(
                                           0.1), // Customize the shadow color here
-                                      blurRadius: 15,
-                                      offset: const Offset(0, 4),
+                                      blurRadius: 10,
+                                      offset: const Offset(0, 0),
                                     ),
                                   ],
                                   gradient: const LinearGradient(
                                     begin: Alignment.topLeft,
-                                    end: Alignment.bottomRight,
+                                    end: Alignment.centerRight,
                                     colors: [
                                       Color(
                                           0xFFCC4E6B), // Customize the gradient start color here
@@ -186,20 +200,14 @@ class _HomePageState extends State<HomePage> {
                                       'More',
                                       textAlign: TextAlign.start,
                                       style: TextStyle(
-                                        fontSize: 16,
+                                        fontSize: 26,
                                         height: 18 / 16,
                                         fontWeight: FontWeight.bold,
                                         color: Colors
                                             .white, // Customize the text color here
                                       ),
                                     ),
-                                    SizedBox(width: 8),
-                                    Icon(
-                                      Icons.arrow_forward_ios_rounded,
-                                      size: 16,
-                                      weight: 60,
-                                      color: Colors.white,
-                                    ),
+
                                   ],
                                 ),
                               ),
@@ -483,31 +491,78 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> _showDeleteConfirmationDialog(
-    BuildContext context,
-    String chatId,
-  ) async {
+      BuildContext context, String chatId) async {
     final store = Provider.of<AIChatStore>(context, listen: false);
     await showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Confirm deletion?'),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('Cancel'),
-              onPressed: () {
-                Navigator.of(context).pop(false);
-              },
+        return Dialog(
+          elevation: 90,
+          shadowColor: Colors.black,
+          surfaceTintColor: Colors.lime[200],
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(24.0),
+          ),
+          backgroundColor:
+              Colors.white.withOpacity(0.8), // Adjust the opacity here
+          child: Container(
+            padding: const EdgeInsets.all(24.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                const Text(
+                  'Confirm deletion?',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 24),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    CupertinoButton(
+                      color: Colors.grey.withOpacity(0.2),
+                      borderRadius: BorderRadius.circular(12.0),
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 12.0,
+                        horizontal: 24.0,
+                      ),
+                      child: const Text(
+                        'Cancel',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.black,
+                        ),
+                      ),
+                      onPressed: () {
+                        Navigator.of(context).pop(false);
+                      },
+                    ),
+                    CupertinoButton(
+                      color: Colors.red,
+                      borderRadius: BorderRadius.circular(12.0),
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 12.0,
+                        horizontal: 24.0,
+                      ),
+                      child: const Text(
+                        'Confirm',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.white,
+                        ),
+                      ),
+                      onPressed: () async {
+                        await store.deleteChatById(chatId);
+                        Navigator.of(context).pop(true);
+                      },
+                    ),
+                  ],
+                ),
+              ],
             ),
-            TextButton(
-              child: const Text('Confirm'),
-              onPressed: () async {
-                Vibration.vibrate(duration: 50);
-                await store.deleteChatById(chatId);
-                Navigator.of(context).pop(true);
-              },
-            ),
-          ],
+          ),
         );
       },
     );

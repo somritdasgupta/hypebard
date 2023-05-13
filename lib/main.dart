@@ -41,6 +41,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
+          useMaterial3: true,
           scaffoldBackgroundColor: const Color(0xFFF6F1F1),
           brightness: Brightness.light,
           pageTransitionsTheme: const PageTransitionsTheme(

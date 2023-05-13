@@ -130,7 +130,6 @@ class _SettingPageState extends State<SettingPage> with WidgetsBindingObserver {
                         _showCustomOpenAIUrlDialog();
                       },
                     ),
-
                     renderItemWidget(
                       Icons.face,
                       Colors.deepPurple,
@@ -142,19 +141,16 @@ class _SettingPageState extends State<SettingPage> with WidgetsBindingObserver {
                         launchURL(url.toString());
                       },
                     ),
-
                     renderItemWidget(
                       Icons.privacy_tip_rounded,
                       Colors.red,
                       26,
                       'Privacy Policy',
                       () async {
-                                Vibration.vibrate(duration: 50);
-                                Utils.jumpPage(
-                                    context, const PrivacyPolicyPage());
-                              },
+                        Vibration.vibrate(duration: 50);
+                        Utils.jumpPage(context, const PrivacyPolicyPage());
+                      },
                     ),
-
                     renderItemWidget(
                       Icons.delete,
                       Colors.indigo,
@@ -256,19 +252,163 @@ class _SettingPageState extends State<SettingPage> with WidgetsBindingObserver {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          scrollable: true,
-          title: const Text('Custom OpenAI API Key'),
-          content: Column(
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30.0),
+          ),
+          backgroundColor: Colors.white,
+          elevation: 60,
+          clipBehavior: Clip.antiAlias,
+          insetAnimationCurve: Curves.fastEaseInToSlowEaseOut,
+          child: Container(
+            color: Colors.transparent, // Set background color to transparent
+            padding: const EdgeInsets.all(20.0),
+            child: ListView(
+              shrinkWrap: true,
+              children: [
+                const Text(
+                  'Custom OpenAI API Key',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 20),
+                TextField(
+                  controller: _keyTextEditingController,
+                  autofocus: true,
+                  decoration: InputDecoration(
+                    hintText: 'Please input your key',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15.0),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                GestureDetector(
+                  onTap: () async {
+                    if (isCopying) {
+                      return;
+                    }
+                    isCopying = true;
+                    await Clipboard.setData(
+                      const ClipboardData(
+                        text: 'https://platform.openai.com/',
+                      ),
+                    );
+                    EasyLoading.showToast(
+                      'Copied successfully!',
+                      dismissOnTap: true,
+                    );
+                    isCopying = false;
+                  },
+                  child: const Text(
+                    '* Custom key can use the APP without restrictions.\n'
+                    '* The AI Chat APP does not collect this key.\n'
+                    '* The Key we provide may report an error, and custom keys need to be created at https://platform.openai.com/.\n'
+                    '* Click Copy URL.',
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.grey,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    TextButton(
+                      style: TextButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 10,
+                          horizontal: 20,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12.0),
+                        ),
+                        backgroundColor: Colors.grey.withOpacity(0.2),
+                      ),
+                      child: const Text('Cancel'),
+                      onPressed: () {
+                        _keyTextEditingController.clear();
+                        Navigator.of(context).pop(false);
+                      },
+                    ),
+                    const SizedBox(width: 10),
+                    TextButton(
+                      style: TextButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 10,
+                          horizontal: 20,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12.0),
+                        ),
+                        backgroundColor: Colors.black.withOpacity(0.8),
+                      ),
+                      child: const Text('Confirm',
+                          style: TextStyle(color: Colors.white)),
+                      onPressed: () async {
+                        ChatGPT.setOpenAIKey(_keyTextEditingController.text)
+                            .then((_) {
+                          _keyTextEditingController.clear();
+                          Navigator.of(context).pop(true);
+                          EasyLoading.showToast(
+                            'API key integrated',
+                            dismissOnTap: true,
+                          );
+                        });
+                      },
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+ void _showCustomOpenAIUrlDialog() async {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return Dialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30.0),
+        ),
+        backgroundColor: Colors.white,
+        insetAnimationCurve: Curves.fastLinearToSlowEaseIn,
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.transparent,
+            borderRadius: BorderRadius.circular(30.0),
+          ),
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
             mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              TextField(
-                controller: _keyTextEditingController,
-                autofocus: true,
-                decoration:
-                    const InputDecoration(hintText: 'Please input your key'),
+              const Text(
+                'Custom OpenAI Base URL',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: 20),
+              TextField(
+                controller: _urlTextEditingController,
+                autofocus: true,
+                decoration: InputDecoration(
+                  hintText: 'Please enter your OpenAI URL',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(15.0),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
               GestureDetector(
                 onTap: () async {
                   if (isCopying) {
@@ -286,168 +426,72 @@ class _SettingPageState extends State<SettingPage> with WidgetsBindingObserver {
                   );
                   isCopying = false;
                 },
-                child: const SingleChildScrollView(
-                  child: Wrap(
-                    children: [
-                      Text(
-                        '* Custom key can use the APP without restrictions.',
-                        textAlign: TextAlign.start,
-                        softWrap: true,
-                        style: TextStyle(
-                          fontSize: 14,
-                          height: 20 / 14,
-                          color: Color.fromRGBO(220, 0, 0, 1.0),
-                        ),
-                      ),
-                      SizedBox(height: 6),
-                      Text(
-                        '* You will get the APP version without ads.',
-                        textAlign: TextAlign.start,
-                        softWrap: true,
-                        style: TextStyle(
-                          fontSize: 14,
-                          height: 20 / 14,
-                          color: Color.fromRGBO(220, 0, 0, 1.0),
-                        ),
-                      ),
-                      SizedBox(height: 6),
-                      Text(
-                        '* The AI Chat APP does not collect this key.',
-                        textAlign: TextAlign.start,
-                        softWrap: true,
-                        style: TextStyle(
-                          fontSize: 14,
-                          height: 20 / 14,
-                          color: Color.fromRGBO(126, 126, 126, 1.0),
-                        ),
-                      ),
-                      SizedBox(height: 6),
-                      Text(
-                        '* The Key we provide may report an error, and custom keys need to be created at https://platform.openai.com/ .',
-                        textAlign: TextAlign.start,
-                        softWrap: true,
-                        style: TextStyle(
-                          fontSize: 14,
-                          height: 20 / 14,
-                          color: Color.fromRGBO(126, 126, 126, 1.0),
-                        ),
-                      ),
-                      SizedBox(height: 6),
-                      Text(
-                        '* Click Copy URL.',
-                        textAlign: TextAlign.start,
-                        softWrap: true,
-                        style: TextStyle(
-                          fontSize: 14,
-                          height: 20 / 14,
-                          color: Color.fromRGBO(126, 126, 126, 1.0),
-                        ),
-                      ),
-                    ],
+                child: const Text(
+                  '* Custom URL allows you to connect to your own OpenAI instance.\n'
+                  '* You can set up a local or custom OpenAI deployment.\n'
+                  '* Click Copy URL.',
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Colors.grey,
                   ),
                 ),
               ),
-            ],
-          ),
-          actions: [
-            TextButton(
-              child: const Text('Cancel'),
-              onPressed: () {
-                _keyTextEditingController.clear();
-                Navigator.of(context).pop(false);
-              },
-            ),
-            TextButton(
-              child: const Text('Confirm'),
-              onPressed: () async {
-                ChatGPT.setOpenAIKey(_keyTextEditingController.text).then((_) {
-                  _keyTextEditingController.clear();
-                  Navigator.of(context).pop(true);
-                  EasyLoading.showToast(
-                    'Successful setting!',
-                    dismissOnTap: true,
-                  );
-                });
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  void _showCustomOpenAIUrlDialog() async {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          scrollable: true,
-          title: const Text('Custom OpenAI Base URL'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextField(
-                controller: _urlTextEditingController,
-                autofocus: true,
-                decoration: const InputDecoration(
-                    hintText: 'Please input your OpenAI host'),
-              ),
-              const SizedBox(height: 12),
-              const Wrap(
+              const SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Text(
-                    "You can set openai host where access to the official OpenAI host is restricted or unavailable, "
-                    "allowing you to configure an alternative host for the specific needs.\n"
-                    "Use https://api.openai.com by default.",
-                    textAlign: TextAlign.start,
-                    softWrap: true,
-                    style: TextStyle(
-                      fontSize: 14,
-                      height: 20 / 14,
-                      color: Colors.grey,
+                  TextButton(
+                    style: TextButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 10,
+                        horizontal: 20,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12.0),
+                      ),
+                      backgroundColor: Colors.grey.withOpacity(0.2),
                     ),
+                    child: const Text('Cancel'),
+                    onPressed: () {
+                      _urlTextEditingController.clear();
+                      Navigator.of(context).pop(false);
+                    },
                   ),
-                  Text(
-                    "This option is only applied when you provide a custom apiKey.",
-                    textAlign: TextAlign.start,
-                    softWrap: true,
-                    style: TextStyle(
-                      fontSize: 14,
-                      height: 20 / 14,
-                      color: Colors.red,
+                  const SizedBox(width: 10),
+                  TextButton(
+                    style: TextButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 10,
+                        horizontal: 20,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12.0),
+                      ),
+                      backgroundColor: Colors.black.withOpacity(0.8),
                     ),
+                    child: const Text('Confirm',
+                        style: TextStyle(color: Colors.white)),
+                    onPressed: () async {
+                      ChatGPT.setOpenAIBaseUrl(_urlTextEditingController.text)
+                          .then((_) {
+                        _urlTextEditingController.clear();
+                        Navigator.of(context).pop(true);
+                        EasyLoading.showToast(
+                          'URL updated',
+                          dismissOnTap: true,
+                        );
+                      });
+                    },
                   ),
                 ],
               ),
             ],
           ),
-          actions: [
-            TextButton(
-              child: const Text('Cancel'),
-              onPressed: () {
-                _urlTextEditingController.clear();
-                Navigator.of(context).pop(false);
-              },
-            ),
-            TextButton(
-              child: const Text('Confirm'),
-              onPressed: () async {
-                ChatGPT.setOpenAIBaseUrl(_urlTextEditingController.text)
-                    .then((_) {
-                  _urlTextEditingController.clear();
-                  Navigator.of(context).pop(true);
-                  EasyLoading.showToast(
-                    'Successful setting!',
-                    dismissOnTap: true,
-                  );
-                });
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
+        ),
+      );
+    },
+  );
+}
 
   void launchURL(String url) async {
     try {

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hypebard/page/ChatPage.dart';
@@ -224,33 +225,80 @@ class _ChatHistoryPageState extends State<ChatHistoryPage> {
     );
   }
 
-  Future<void> _showDeleteConfirmationDialog(
-    BuildContext context,
-    String chatId,
-  ) async {
-    final store = Provider.of<AIChatStore>(context, listen: false);
-    await showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Confirm deletion?'),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('Cancel'),
-              onPressed: () {
-                Navigator.of(context).pop(false);
-              },
-            ),
-            TextButton(
-              child: const Text('Confirm'),
-              onPressed: () async {
-                await store.deleteChatById(chatId);
-                Navigator.of(context).pop(true);
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
+
+Future<void> _showDeleteConfirmationDialog(BuildContext context, String chatId) async {
+  final store = Provider.of<AIChatStore>(context, listen: false);
+  await showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return Dialog(
+        elevation: 90,
+        shadowColor: Colors.black,
+        surfaceTintColor: Colors.lime[200],
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(24.0),
+        ),
+        backgroundColor: Colors.white.withOpacity(0.8), // Adjust the opacity here
+        child: Container(
+          padding: const EdgeInsets.all(24.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              const Text(
+                'Confirm deletion?',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 24),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  CupertinoButton(
+                    color: Colors.grey.withOpacity(0.2),
+                    borderRadius: BorderRadius.circular(12.0),
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 12.0,
+                      horizontal: 24.0,
+                    ),
+                    child: const Text(
+                      'Cancel',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.black,
+                      ),
+                    ),
+                    onPressed: () {
+                      Navigator.of(context).pop(false);
+                    },
+                  ),
+                  CupertinoButton(
+                    color: Colors.red,
+                    borderRadius: BorderRadius.circular(12.0),
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 12.0,
+                      horizontal: 24.0,
+                    ),
+                    child: const Text(
+                      'Confirm',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.white,
+                      ),
+                    ),
+                    onPressed: () async {
+                      await store.deleteChatById(chatId);
+                      Navigator.of(context).pop(true);
+                    },
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      );
+    },
+  );
+}
 }
