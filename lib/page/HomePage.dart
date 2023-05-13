@@ -7,7 +7,6 @@ import 'package:hypebard/page/ChatPage.dart';
 import 'package:hypebard/page/SettingPage.dart';
 import 'package:hypebard/stores/AIChatStore.dart';
 import 'package:hypebard/utils/Chatgpt.dart';
-import 'package:hypebard/utils/Config.dart';
 import 'package:hypebard/utils/Time.dart';
 import 'package:hypebard/utils/Utils.dart';
 import 'package:provider/provider.dart';
@@ -103,9 +102,10 @@ class _HomePageState extends State<HomePage> {
               shadowColor: Colors.black.withOpacity(0.2),
               child: const ClipRRect(
                 borderRadius: BorderRadius.only(
-                  topRight: Radius.circular(20.0),
-                  bottomRight: Radius.circular(20.0),
+                  topRight: Radius.circular(25.0),
+                  bottomRight: Radius.circular(25.0),
                 ),
+
                 child: Image(
                   width: 180,
                   height: 45,
@@ -119,8 +119,8 @@ class _HomePageState extends State<HomePage> {
             ),
             ClipRRect(
               borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(20.0),
-                bottomLeft: Radius.circular(20.0),
+                topLeft: Radius.circular(15.0),
+                bottomLeft: Radius.circular(15.0),
               ),
               child: Container(
                 width: 180,
@@ -135,10 +135,10 @@ class _HomePageState extends State<HomePage> {
         actions: [
           const SizedBox(width: 6),
           IconButton(
-            icon: const Icon(Icons.hub_rounded),
+            icon: const Icon(Icons.security_rounded),
             splashColor: Colors.black54,
-            iconSize: 35,
-            color: const Color.fromRGBO(98, 98, 98, 1.0),
+            iconSize: 40,
+            color: const Color.fromRGBO(37, 34, 34, 1.0),
             onPressed: () {
               Vibration.vibrate(duration: 50);
               Utils.jumpPage(context, const SettingPage());
@@ -157,7 +157,7 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     if (store.homeHistoryList.length > 0)
                       _renderTitle(
-                        'Your Rewinds.',
+                        'Your Rewinds',
                         animateText: false,
                         rightContent: Flexible(
                           child: SizedBox(
@@ -186,7 +186,7 @@ class _HomePageState extends State<HomePage> {
                                     end: Alignment.centerRight,
                                     colors: [
                                       Color(
-                                          0xFFCC4E6B), // Customize the gradient start color here
+                                          0xFF46144B), // Customize the gradient start color here
                                       Color(
                                           0xFFF6F1F1), // Customize the gradient end color here
                                     ],
@@ -200,7 +200,7 @@ class _HomePageState extends State<HomePage> {
                                       'More',
                                       textAlign: TextAlign.start,
                                       style: TextStyle(
-                                        fontSize: 26,
+                                        fontSize: 18,
                                         height: 18 / 16,
                                         fontWeight: FontWeight.bold,
                                         color: Colors
