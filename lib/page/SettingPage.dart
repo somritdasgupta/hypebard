@@ -278,7 +278,7 @@ class _SettingPageState extends State<SettingPage> with WidgetsBindingObserver {
                   controller: _keyTextEditingController,
                   autofocus: true,
                   decoration: InputDecoration(
-                    hintText: 'Please input your key',
+                    hintText: 'Enter your API key',
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(15.0),
                     ),
@@ -303,10 +303,8 @@ class _SettingPageState extends State<SettingPage> with WidgetsBindingObserver {
                     isCopying = false;
                   },
                   child: const Text(
-                    '* Custom key can use the APP without restrictions.\n'
-                    '* The AI Chat APP does not collect this key.\n'
-                    '* The Key we provide may report an error, and custom keys need to be created at https://platform.openai.com/.\n'
-                    '* Click Copy URL.',
+                    '⦿ hypeBard does not collect this key.\n'
+                    '⦿ In case our API key reports an error, custom keys need to be created at https://platform.openai.com/.\n',
                     style: TextStyle(
                       fontSize: 14,
                       color: Colors.grey,
@@ -402,7 +400,7 @@ class _SettingPageState extends State<SettingPage> with WidgetsBindingObserver {
                 controller: _urlTextEditingController,
                 autofocus: true,
                 decoration: InputDecoration(
-                  hintText: 'Please enter your OpenAI URL',
+                  hintText: 'Enter your OpenAI URL',
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(15.0),
                   ),
@@ -427,9 +425,8 @@ class _SettingPageState extends State<SettingPage> with WidgetsBindingObserver {
                   isCopying = false;
                 },
                 child: const Text(
-                  '* Custom URL allows you to connect to your own OpenAI instance.\n'
-                  '* You can set up a local or custom OpenAI deployment.\n'
-                  '* Click Copy URL.',
+                  '⦿ Custom URL allows you to connect to your own OpenAI instance.\n'
+                  '⦿ You can set up a local or custom OpenAI deployment.\n',
                   style: TextStyle(
                     fontSize: 14,
                     color: Colors.grey,

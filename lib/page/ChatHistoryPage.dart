@@ -45,8 +45,8 @@ class _ChatHistoryPageState extends State<ChatHistoryPage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             InkWell(
-              splashColor: Colors.white,
-              highlightColor: Colors.white,
+              splashColor: Colors.transparent,
+              highlightColor: Colors.transparent,
               onTap: () {
                 Navigator.pop(context);
               },
@@ -125,79 +125,62 @@ class _ChatHistoryPageState extends State<ChatHistoryPage> {
         final store = Provider.of<AIChatStore>(context, listen: false);
         store.deleteChatById(chat['id']);
       },
-      child: InkWell(
-        highlightColor: Colors.white,
-        splashColor: Colors.white,
-        onTap: () {
-          final store = Provider.of<AIChatStore>(context, listen: false);
-          store.fixChatList();
-          Utils.jumpPage(
-            context,
-            ChatPage(
-              chatId: chat['id'],
-              autofocus: false,
-              chatType: chat['ai']['type'],
-            ),
-          );
-        },
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(height: 10),
-            Container(
-              width: MediaQuery.of(context).size.width,
-              padding: const EdgeInsets.fromLTRB(2, 0, 2, 0),
-              child: Container(
-                clipBehavior: Clip.antiAlias,
-                decoration: BoxDecoration(
-                  color: const Color(0xA5D5AFAF),
-                  borderRadius: BorderRadius.circular(20),
+      child: Card(
+        color: Colors.black38,
+        elevation: 5,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 5),
+        child: InkWell(
+          highlightColor: Colors.white,
+          splashColor: Colors.white,
+          onTap: () {
+            final store = Provider.of<AIChatStore>(context, listen: false);
+            store.fixChatList();
+            Utils.jumpPage(
+              context,
+              ChatPage(
+                chatId: chat['id'],
+                autofocus: false,
+                chatType: chat['ai']['type'],
+              ),
+            );
+          },
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  TimeUtils().formatTime(
+                    chat['updatedTime'],
+                    format: 'dd/MM/yyyy ➜ HH:mm',
+                  ),
+                  style: const TextStyle(
+                    color: Colors.tealAccent,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
+                const SizedBox(height: 8),
+                Text(
+                  chat['messages'][0]['content'],
+                  style: const TextStyle(
+                    color: Colors.tealAccent,
+                    fontSize: 16,
+                    fontWeight: FontWeight.normal,
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Expanded(
-                      child: Container(
-                        padding: const EdgeInsets.fromLTRB(20, 20, 0, 20),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            if (chat['updatedTime'] != null)
-                              Text(
-                                TimeUtils().formatTime(
-                                  chat['updatedTime'],
-                                  format: 'dd/MM/yyyy ➜ HH:mm',
-                                ),
-                                softWrap: false,
-                                style: const TextStyle(
-                                  color: Colors.black54,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
-                                  height: 24 / 16,
-                                ),
-                              ),
-                            const SizedBox(height: 8),
-                            Text(
-                              chat['messages'][0]['content'],
-                              softWrap: true,
-                              style: const TextStyle(
-                                color: Colors.black87,
-                                fontSize: 16,
-                                height: 24 / 16,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
                     IconButton(
                       icon: const Icon(
                         Icons.playlist_remove_rounded,
                         size: 30,
                       ),
-                      color: Colors.blueGrey,
+                      color: Colors.tealAccent,
                       onPressed: () {
                         Vibration.vibrate(duration: 50);
                         _showDeleteConfirmationDialog(context, chat['id']);
@@ -205,10 +188,9 @@ class _ChatHistoryPageState extends State<ChatHistoryPage> {
                     ),
                   ],
                 ),
-              ),
+              ],
             ),
-            const SizedBox(height: 10),
-          ],
+          ),
         ),
       ),
     );
@@ -225,80 +207,79 @@ class _ChatHistoryPageState extends State<ChatHistoryPage> {
     );
   }
 
-
-Future<void> _showDeleteConfirmationDialog(BuildContext context, String chatId) async {
-  final store = Provider.of<AIChatStore>(context, listen: false);
-  await showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return Dialog(
-        elevation: 90,
-        shadowColor: Colors.black,
-        surfaceTintColor: Colors.lime[200],
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(24.0),
-        ),
-        backgroundColor: Colors.white.withOpacity(0.8), // Adjust the opacity here
-        child: Container(
-          padding: const EdgeInsets.all(24.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              const Text(
-                'Confirm deletion?',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 24),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  CupertinoButton(
-                    color: Colors.grey.withOpacity(0.2),
-                    borderRadius: BorderRadius.circular(12.0),
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 12.0,
-                      horizontal: 24.0,
-                    ),
-                    child: const Text(
-                      'Cancel',
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.black,
-                      ),
-                    ),
-                    onPressed: () {
-                      Navigator.of(context).pop(false);
-                    },
-                  ),
-                  CupertinoButton(
-                    color: Colors.red,
-                    borderRadius: BorderRadius.circular(12.0),
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 12.0,
-                      horizontal: 24.0,
-                    ),
-                    child: const Text(
-                      'Confirm',
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.white,
-                      ),
-                    ),
-                    onPressed: () async {
-                      await store.deleteChatById(chatId);
-                      Navigator.of(context).pop(true);
-                    },
-                  ),
-                ],
-              ),
-            ],
+  Future<void> _showDeleteConfirmationDialog(
+      BuildContext context, String chatId) async {
+    final store = Provider.of<AIChatStore>(context, listen: false);
+    await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          elevation: 90,
+          shadowColor: Colors.black,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(24.0),
           ),
-        ),
-      );
-    },
-  );
-}
+          backgroundColor: Colors.white,
+          child: Container(
+            padding: const EdgeInsets.all(24.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                const Text(
+                  'Confirm deletion?',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 24),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    CupertinoButton(
+                      color: Colors.grey.withOpacity(0.2),
+                      borderRadius: BorderRadius.circular(12.0),
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 12.0,
+                        horizontal: 24.0,
+                      ),
+                      child: const Text(
+                        'Cancel',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.black,
+                        ),
+                      ),
+                      onPressed: () {
+                        Navigator.of(context).pop(false);
+                      },
+                    ),
+                    CupertinoButton(
+                      color: Colors.red,
+                      borderRadius: BorderRadius.circular(12.0),
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 12.0,
+                        horizontal: 24.0,
+                      ),
+                      child: const Text(
+                        'Confirm',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.white,
+                        ),
+                      ),
+                      onPressed: () async {
+                        await store.deleteChatById(chatId);
+                        Navigator.of(context).pop(true);
+                      },
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
 }

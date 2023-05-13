@@ -231,7 +231,7 @@ class ChatGPT {
   static Set chatModelTypeList =
       chatModelList.map((map) => map['type']).toSet();
 
-  /// 实现通过type获取信息
+
   static getAiInfoByType(String chatType) {
     return chatModelList.firstWhere(
       (item) => item['type'] == chatType,
@@ -304,7 +304,7 @@ class ChatGPT {
     debugPrint('---text $text---');
     String content = chatCompletion.choices.first.message.content ?? '';
     bool hasRelation = content.toLowerCase().contains('true');
-    debugPrint('---检查问题前后关联度 $hasRelation---');
+    debugPrint('--- $hasRelation---');
     return hasRelation;
   }
 

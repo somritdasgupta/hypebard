@@ -153,62 +153,50 @@ class _ChatPageState extends State<ChatPage> {
     final chat = store.getChatById(widget.chatType, widget.chatId);
 
     return Scaffold(
+      extendBodyBehindAppBar: true,
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
         systemOverlayStyle: SystemUiOverlayStyle.dark,
         toolbarHeight: 60,
         automaticallyImplyLeading: false,
         titleSpacing: 0,
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        centerTitle: true,
         title: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             InkWell(
-              splashColor: Colors.white,
-              highlightColor: Colors.white,
+              splashColor: Colors.transparent,
+              highlightColor: Colors.transparent,
               onTap: () {
                 Navigator.pop(context);
               },
-              child: const Row(
-                children: [
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      SizedBox(
-                        height: 60,
-                        child: Row(
-                          children: [
-                            SizedBox(width: 24),
-                            Icon(
-                              Icons.arrow_back_ios_rounded,
-                              size: 30,
-                              weight: 100,
-                              color: Colors.black,
-                            ),
-                            SizedBox(width: 12),
-                            Text(
-                              "hypeBard",
-                              style: TextStyle(
-                                color: Color.fromRGBO(0, 0, 0, 1),
-                                fontSize: 26,
-                                height: 0,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                            SizedBox(width: 24),
-                          ],
-                        ),
+              child: Material(
+                elevation: 4,
+                borderRadius: BorderRadius.circular(20),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: Container(
+                    width: 150,
+                    height: 35,
+                    decoration: const BoxDecoration(
+                      color: Colors.white,
+                    ),
+                    child: Center(
+                      child: Image.asset(
+                        'images/hypeBard.png',
+                        width: 150,
+                        height: 35,
+                        fit: BoxFit.fill,
                       ),
-                    ],
+                    ),
                   ),
-                ],
+                ),
               ),
-            )
+            ),
           ],
         ),
-        backgroundColor: const Color(0xFFF6F1F1),
-        elevation: 0,
-        actions: const [
-          SizedBox(width: 20),
-        ],
       ),
       body: SafeArea(
         child: Column(

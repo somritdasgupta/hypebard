@@ -142,22 +142,6 @@ class _QuestionInputState extends State<QuestionInput> {
       'content': '',
     });
     try {
-      // void onProgress(chatStreamEvent) {
-      //   final firstCompletionChoice = chatStreamEvent.choices.first;
-      //   if (firstCompletionChoice.finishReason == 'stop') {
-      //     _updateGeneratingStatus(false);
-      //     return;
-      //   }
-      //   store.pushStreamMessage(chat['id'], messageIndex, {
-      //     'role': 'assistant',
-      //     'content': firstCompletionChoice.delta.content,
-      //   });
-      // }
-      //
-      // ChatGPT.sendMessageOnStream(
-      //   messages,
-      //   onProgress: onProgress,
-      // );
       final response = await ChatGPT.sendMessage(messages);
       final firstCompletionChoice = response.choices.first;
       await store.replaceMessage(chat['id'], messageIndex, {
@@ -187,7 +171,6 @@ class _QuestionInputState extends State<QuestionInput> {
       print('---_isGenerating---');
       return;
     }
-
     final text = myQuestion;
 
     _updateGeneratingStatus(true);
@@ -230,24 +213,6 @@ class _QuestionInputState extends State<QuestionInput> {
       widget.scrollToBottom!();
     }
     try {
-      /// Carton
-      // void onProgress(chatStreamEvent) {
-      //   final firstCompletionChoice = chatStreamEvent.choices.first;
-      //   if (firstCompletionChoice.finishReason == 'stop') {
-      //     _updateGeneratingStatus(false);
-      //     return;
-      //   }
-      //   store.pushStreamMessage(chat['id'], messageIndex, {
-      //     'role': 'assistant',
-      //     'content': firstCompletionChoice.delta.content,
-      //   });
-      // }
-      //
-      // ChatGPT.sendMessageOnStream(
-      //   messages,
-      //   onProgress: onProgress,
-      // );
-
       final response = await ChatGPT.sendMessage(messages);
       final firstCompletionChoice = response.choices.first;
       await store.replaceMessage(chat['id'], messageIndex, {
@@ -316,14 +281,10 @@ class _QuestionInputState extends State<QuestionInput> {
                 boxShadow: [
                   BoxShadow(
                     color: Colors.blueGrey.withOpacity(0.5),
-                    // Shadow color
                     spreadRadius: 0,
-                    // Spread radius
                     blurRadius: 20,
-                    // Blur radius
                     offset: const Offset(0, 0),
-                    // Offs
-                    blurStyle: BlurStyle.outer, // et in the x and y direction
+                    blurStyle: BlurStyle.outer,
                   ),
                 ],
               ),
@@ -403,9 +364,9 @@ class _QuestionInputState extends State<QuestionInput> {
           child: Container(
             padding: const EdgeInsets.all(8),
             child: Image.asset(
+              'images/${isActive ? 'submit_active_icon.png' : 'submit_icon.png'}',
               width: 40,
               height: 30,
-              'images/${isActive ? 'submit_active_icon.png' : 'submit_icon.png'}',
             ),
           ),
         ),

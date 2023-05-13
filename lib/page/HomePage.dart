@@ -83,6 +83,8 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     final store = Provider.of<AIChatStore>(context, listen: true);
     return Scaffold(
+      extendBodyBehindAppBar: true,
+      extendBody: true,
       appBar: AppBar(
         systemOverlayStyle: SystemUiOverlayStyle.dark,
         forceMaterialTransparency: true,
@@ -105,7 +107,6 @@ class _HomePageState extends State<HomePage> {
                   topRight: Radius.circular(25.0),
                   bottomRight: Radius.circular(25.0),
                 ),
-
                 child: Image(
                   width: 180,
                   height: 45,
@@ -130,7 +131,7 @@ class _HomePageState extends State<HomePage> {
             ),
           ],
         ),
-        backgroundColor: const Color(0xFFF6F1F1),
+        backgroundColor: Colors.transparent,
         elevation: 0,
         actions: [
           const SizedBox(width: 6),
@@ -207,7 +208,6 @@ class _HomePageState extends State<HomePage> {
                                             .white, // Customize the text color here
                                       ),
                                     ),
-
                                   ],
                                 ),
                               ),
@@ -427,7 +427,7 @@ class _HomePageState extends State<HomePage> {
             child: Container(
               clipBehavior: Clip.antiAlias,
               decoration: BoxDecoration(
-                color: const Color(0xA5D5AFAF),
+                color: Colors.black54,
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Row(
@@ -448,7 +448,7 @@ class _HomePageState extends State<HomePage> {
                               ),
                               softWrap: false,
                               style: const TextStyle(
-                                color: Colors.black54,
+                                color: Colors.tealAccent,
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600,
                                 height: 24 / 16,
@@ -459,7 +459,7 @@ class _HomePageState extends State<HomePage> {
                             chat['messages'][0]['content'],
                             softWrap: true,
                             style: const TextStyle(
-                              color: Colors.black87,
+                              color: Colors.tealAccent,
                               fontSize: 16,
                               height: 24 / 16,
                               fontWeight: FontWeight.w500,
@@ -474,7 +474,7 @@ class _HomePageState extends State<HomePage> {
                       Icons.playlist_remove_rounded,
                       size: 30,
                     ),
-                    color: Colors.blueGrey,
+                    color: Colors.tealAccent,
                     onPressed: () {
                       Vibration.vibrate(duration: 50);
                       _showDeleteConfirmationDialog(context, chat['id']);
