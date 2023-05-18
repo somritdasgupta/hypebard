@@ -159,7 +159,7 @@ class PrivacyPolicyPage extends StatelessWidget {
             ElevatedButton(
               onPressed: () {
                 Vibration.vibrate(duration: 50);
-                launch('https://www.openai.com/privacy-policy/');
+                launchadd ('https://www.openai.com/privacy-policy/');
               },
               style: ElevatedButton.styleFrom(
                 elevation: 10,
