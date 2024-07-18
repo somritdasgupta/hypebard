@@ -1,13 +1,4 @@
-# hypeBard
-
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-
-<div style="display: flex;">
-  <div style="flex: 1;">
-    <a href="https://app.daily.dev/somrit">
-      <img src="https://api.daily.dev/devcards/da71dd31134c42e488c5f8afd3548e65.png?r=sk9" width="150" alt="Somrit Dasgupta's Dev Card"/>
-    </a>
-  </div>
   
   <div style="flex: 2;">
     <p>Hypebard is an AI-powered writing assistant that makes writing easier and more enjoyable than ever before. Built using Flutter and written in Dart, Hypebard uses OpenAI's GPT technology to provide you with natural language processing capabilities that are second to none.</p>
@@ -59,6 +50,10 @@ Hypebard was built using the following open-source libraries and tools:
 * [OpenAI GPT](https://beta.openai.com/)
 * [Travis CI](https://travis-ci.org/)
 * [Google Fonts](https://fonts.google.com/)
+
+
+<h3 align="left">Coffee?</h3>
+<p><a href="https://www.buymeacoffee.com/somritdasgupta"> <img align="left" src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" height="50" width="210" alt="somritdasgupta" /></a></p><br><br>
 
 
 
